@@ -19,7 +19,7 @@ export class BankService {
   private bankAccount$$ = new BehaviorSubject<number>(this.balance);
   bankAccount$ = this.bankAccount$$.asObservable();
 
-  isAbleToBuild(block: IBloxx): boolean {
+  isAffordable(block: IBloxx): boolean {
     if (!this.prizes[block]) {
       return false;
     }

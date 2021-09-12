@@ -14,7 +14,7 @@ export class NodeDirective {
 
   @HostListener('click')
   boom() {
-    if (this.bank.isAbleToBuild(this.engine.activeBlock)) {
+    if (this.bank.isAffordable(this.engine.activeBlock)) {
       switch (this.engine.activeBlock) {
         case 'unit':
           if (!this.stNode.unit) {
