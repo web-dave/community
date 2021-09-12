@@ -6,4 +6,5 @@ export type IBloxx =
   | 'shopping'
   | 'school'
   | 'safety'
-  | 'pointer';
+  | 'pointer'
+  | 'attractions';

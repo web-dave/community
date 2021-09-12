@@ -14,12 +14,14 @@ export class BankService {
     shopping: 2500,
     school: 1500,
     safety: 4500,
+    attractions: 5000,
   };
   private balance = 350000;
   private bankAccount$$ = new BehaviorSubject<number>(this.balance);
   bankAccount$ = this.bankAccount$$.asObservable();
 
   isAffordable(block: IBloxx): boolean {
+    console.log(block);
     if (!this.prizes[block]) {
       return false;
     }

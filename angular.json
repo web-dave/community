@@ -16,6 +16,9 @@
         "@schematics/angular:service": {
           "skipTests": true
         },
+        "@schematics/angular:class": {
+          "skipTests": true
+        },
         "@schematics/angular:application": {
           "strict": true
         }

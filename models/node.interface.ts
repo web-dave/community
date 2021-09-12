@@ -1,4 +1,4 @@
-import { Unit } from 'src/app/Bloxx/unit.class';
+import { Unit } from 'src/app/Bloxx/unit';
 
 export interface INode {
   id: number;
