@@ -20,7 +20,8 @@
       ></div>
       <div class="toolbar-divider"></div>
       <div class="wallet">
-        <span>350000</span><span class="rental-income">500</span>
+        <span>{{ bank.bankAccount$ | async }}</span
+        ><span class="rental-income">500</span>
       </div>
     </div>
 

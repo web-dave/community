@@ -1,5 +1,6 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { IBloxx } from 'models/bloxx.interface';
+import { BankService } from './bank.service';
 import { GameService } from './game.service';
 
 @Component({
@@ -10,7 +11,7 @@ import { GameService } from './game.service';
 export class AppComponent {
   total_floors = this.engine.total_floors;
   cursor_style = 'url("assets/img/icon/pointer.png"), pointer';
-  constructor(private engine: GameService) {}
+  constructor(private engine: GameService, public bank: BankService) {}
 
   updatePointer(icon: IBloxx) {
     this.engine.activeBlock = icon;
