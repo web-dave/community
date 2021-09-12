@@ -1,41 +1,49 @@
-<div id="gameboard-outer-border" [style.cursor]="cursor_style">
-  <div #gameboard id="gameboard">
-    <div id="toolbar">
-      <div class="toolbar-ico unit" (click)="updatePointer('unit')"></div>
-      <div class="toolbar-ico stairs" (click)="updatePointer('stairs')"></div>
-      <div class="toolbar-ico flat" (click)="updatePointer('flat')"></div>
-      <div class="toolbar-ico office" (click)="updatePointer('office')"></div>
+<div class="gameboard-outer-border" [style.cursor]="cursor_style">
+  <div class="gameboard">
+    <div class="toolbar">
+      <div class="toolbar-icon unit" (click)="updatePointer('unit')"></div>
+      <div class="toolbar-icon stairs" (click)="updatePointer('stairs')"></div>
+      <div class="toolbar-divider"></div>
+      <div class="toolbar-icon flat" (click)="updatePointer('flat')"></div>
+      <div class="toolbar-icon office" (click)="updatePointer('office')"></div>
       <div
-        class="toolbar-ico shopping"
+        class="toolbar-icon shopping"
         (click)="updatePointer('shopping')"
       ></div>
-      <div class="toolbar-ico school" (click)="updatePointer('school')"></div>
-      <div class="toolbar-ico safety" (click)="updatePointer('safety')"></div>
-      <div class="toolbar-ico pointer" (click)="updatePointer('pointer')"></div>
-      <!-- <div class="toolbar-divide"></div> -->
-      <!-- <div class="toolbar-divide"></div> -->
+      <div class="toolbar-divider"></div>
+      <div class="toolbar-icon school" (click)="updatePointer('school')"></div>
+      <div class="toolbar-icon safety" (click)="updatePointer('safety')"></div>
+      <div class="toolbar-divider"></div>
+      <div
+        class="toolbar-icon pointer"
+        (click)="updatePointer('pointer')"
+      ></div>
+      <div class="toolbar-divider"></div>
+      <div class="wallet">
+        <span>350000</span><span class="rental-income">500</span>
+      </div>
     </div>
 
     <div
-      *ngFor="let floor of total_floors; let i = index"
-      [id]="'floor_' + i"
+      *ngFor="let floor of total_floors"
+      [id]="'floor_' + floor.id"
       class="floor"
-      [class]="
-        i > total_floors.length - 6 ? 'underground-bg ubg-' + i : 'sky-bg'
-      "
+      [class]="floor.id > 10 ? 'underground-bg ubg-' + floor.id : 'sky-bg'"
     >
       <div class="node-container">
         <div
-          *ngFor="let node of total_floor_nodes; let j = index"
+          *ngFor="let node of floor.nodes"
           class="node"
-          [id]="'node_' + i + '_' + j"
+          [stNode]="node"
+          [connected]="floor.stairs"
+          [id]="'node_' + floor.id + '_' + node.id"
         ></div>
       </div>
     </div>
     <div class="bus"></div>
   </div>
 </div>
-<span class="material-icons-two-tone"> laptop </span>
+<!-- <span class="material-icons-two-tone"> laptop </span>
 <span class="material-icons-two-tone"> weekend </span>
 <span class="material-icons-two-tone"> school </span>
 <span class="material-icons-two-tone"> shopping_cart </span>
@@ -43,4 +51,4 @@
 <span class="material-icons-two-tone"> directions_bus </span>
 <span class="material-icons-two-tone"> health_and_safety </span>
 <span class="material-icons-two-tone"> attractions </span>
-<span class="material-icons-two-tone"> dangerous </span>
+<span class="material-icons-two-tone"> dangerous </span> -->

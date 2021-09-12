@@ -1,4 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
+import { IBloxx } from 'models/bloxx.interface';
+import { GameService } from './game.service';
 
 @Component({
   selector: 'st-root',
@@ -6,15 +8,12 @@ import { Component, ViewChild } from '@angular/core';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  @ViewChild('gameboard') gameboard!: HTMLDivElement;
-  total_floors = new Array(16);
-  total_floor_nodes = new Array(30);
+  total_floors = this.engine.total_floors;
   cursor_style = 'url("assets/img/icon/pointer.png"), pointer';
-  constructor() {}
+  constructor(private engine: GameService) {}
 
-  updatePointer(icon: string) {
+  updatePointer(icon: IBloxx) {
+    this.engine.activeBlock = icon;
     this.cursor_style = `url('assets/img/icon/${icon}.png'), pointer`;
-    console.log(icon, this.cursor_style);
   }
-  build(node: string) {}
 }
