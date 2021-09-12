@@ -1,9 +1,10 @@
 import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 import { INode } from 'models/node.interface';
 import { GameService } from './game.service';
-import { Unit } from './unit.class';
+import { Unit } from './Bloxx/unit.class';
 import { filter } from 'rxjs/operators';
 import { BankService } from './bank.service';
+import { Stairs } from './Bloxx/stairs.class';
 
 @Directive({
   selector: '[stNode]',
@@ -18,20 +19,12 @@ export class NodeDirective {
       switch (this.engine.activeBlock) {
         case 'unit':
           if (!this.stNode.unit) {
-            console.log(this.engine.activeBlock, this.stNode);
             if (this.engine.isAbleToStart(this.stNode.floor, this.stNode.id)) {
-              console.log(
-                this.stNode,
-                this.engine.activeBlock,
-                this.elementRef
-              );
               this.stNode.unit = new Unit(
                 this.stNode.id,
-                'unit-' + this.stNode.floor + '-' + this.stNode.id,
-                this.stNode.floor
+                this.stNode.floor,
+                this.elementRef.nativeElement as HTMLDivElement
               );
-              this.elementRef.nativeElement.style.backgroundImage =
-                'url("assets/img/icon/unit.png")';
             }
           }
           break;
@@ -39,9 +32,11 @@ export class NodeDirective {
           break;
         case 'stairs':
           if (this.stNode.unit?.floor && !this.stNode.unit?.tenant?.name) {
-            this.stNode.unit.tenant.name = 'stairs';
-            this.engine.connectFloor(this.stNode.floor);
-            this.elementRef.nativeElement.style.backgroundImage = `url("assets/img/icon/unit.png"), url("assets/img/icon/stairs.png")`;
+            this.stNode.unit.tenant = new Stairs(
+              this.stNode,
+              this.elementRef.nativeElement as HTMLDivElement,
+              this.engine
+            );
           }
           break;
         case 'flat':
