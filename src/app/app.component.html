@@ -51,10 +51,7 @@
         (click)="updatePointer('pointer')"
       ></div>
       <div class="toolbar-divider"></div>
-      <div class="wallet">
-        <span>{{ bank.bankAccount$ | async }}</span>
-        <!-- <span class="rental-income">500</span> -->
-      </div>
+      <div class="wallet">{{ bank.bankAccount$ | async }}</div>
     </div>
 
     <div

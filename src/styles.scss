@@ -69,22 +69,17 @@ body {
       }
       /** Wallet **/
       .wallet {
-        display: inline-block;
-        right: 50px;
-        position: absolute;
-        // float: right;
         color: #e7e7e7;
-        font-size: 25px;
-        margin-top: 2px;
         font-size: 2em;
-        span {
-          margin-right: 10px;
-          &::after {
-            content: "€";
-          }
-          &.rental-income {
-            color: #63b98b;
-          }
+        height: 48px;
+        width: 48px;
+        margin-left: 10px;
+        display: inline-block;
+        z-index: 102;
+        vertical-align: bottom;
+
+        &::after {
+          content: "€";
         }
       }
 
