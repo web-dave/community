@@ -27,12 +27,17 @@ export class BankService {
     }
     return this.balance > this.prizes[block];
   }
-  subtract(block: IBloxx) {
+  subtractByBlock(block: IBloxx) {
     if (this.prizes[block]) {
       const amount = this.prizes[block];
       this.balance -= amount;
       this.bankAccount$$.next(this.balance);
     }
+  }
+  subtract(amount: number) {
+    console.log('subtract', amount);
+    this.balance -= amount;
+    this.bankAccount$$.next(this.balance);
   }
 
   add(amount: number) {

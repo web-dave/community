@@ -13,6 +13,6 @@ export class Stairs {
   ) {
     this.dom.style.backgroundImage = `url("assets/img/icon/unit.png"), url("assets/img/icon/stairs.png")`;
     this.engine.connectFloor(this.node.floor);
-    this.bank.subtract('stairs');
+    this.bank.subtractByBlock('stairs');
   }
 }

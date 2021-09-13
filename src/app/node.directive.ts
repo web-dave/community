@@ -2,7 +2,6 @@ import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 import { INode } from 'models/node.interface';
 import { GameService } from './game.service';
 import { Unit } from './Bloxx/unit';
-import { filter } from 'rxjs/operators';
 import { BankService } from './bank.service';
 import { Stairs } from './Bloxx/stairs';
 import { Flat } from './Bloxx/flat';
@@ -28,7 +27,8 @@ export class NodeDirective {
               this.stNode.unit = new Unit(
                 this.stNode,
                 this.elementRef.nativeElement as HTMLDivElement,
-                this.bank
+                this.bank,
+                this.engine
               );
             }
           }
@@ -102,25 +102,9 @@ export class NodeDirective {
     }
   }
 
-  draw() {
-    if (
-      !this.engine.isConnected(this.stNode.floor) &&
-      this.stNode.unit &&
-      !this.connected
-    ) {
-      this.elementRef.nativeElement.classList.add('no-connection');
-    } else {
-      this.elementRef.nativeElement.classList.remove('no-connection');
-    }
-  }
-
   constructor(
     private engine: GameService,
     private elementRef: ElementRef,
     public bank: BankService
-  ) {
-    this.engine.tick$
-      .pipe(filter(() => !!this.stNode.unit))
-      .subscribe(() => this.draw());
-  }
+  ) {}
 }

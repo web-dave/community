@@ -10,11 +10,9 @@ import { GameService } from './game.service';
 })
 export class AppComponent {
   total_floors = this.engine.total_floors;
-  cursor_style = 'url("assets/img/icon/pointer.png"), pointer';
-  constructor(private engine: GameService, public bank: BankService) {}
+  constructor(public engine: GameService, public bank: BankService) {}
 
   updatePointer(icon: IBloxx) {
     this.engine.activeBlock = icon;
-    this.cursor_style = `url('assets/img/icon/${icon}.png'), pointer`;
   }
 }

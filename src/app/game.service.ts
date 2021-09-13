@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { IBloxx } from 'models/bloxx.interface';
 import { IFloor } from 'models/floor.interface';
 import { interval } from 'rxjs';
+import { share } from 'rxjs/operators';
+import { takeEveryNth } from './utils/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -10,11 +12,12 @@ export class GameService {
   floor_offset = 0;
   node_offset = 0;
   floors_count = 16;
-  unit_count = 30;
-  activeBlock: IBloxx = 'pointer';
+  unit_count = 25;
+  activeBlock: IBloxx = 'unit';
   total_floors: IFloor[] = [];
 
-  tick$ = interval(2000);
+  tick$ = interval(2000).pipe(share());
+  rentTick$ = this.tick$.pipe(takeEveryNth(7));
 
   constructor() {
     this.total_floors = [...Array(this.floors_count).keys()].map((i) => ({
