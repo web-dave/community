@@ -41,6 +41,7 @@ export class BankService {
   }
 
   add(amount: number) {
+    console.log(this.balance, amount);
     this.balance += amount;
     this.bankAccount$$.next(this.balance);
   }
