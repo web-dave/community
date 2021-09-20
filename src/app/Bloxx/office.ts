@@ -16,6 +16,7 @@ export class Office {
   ) {
     this.dom.style.backgroundImage = `url("assets/img/icon/unit.png"), url("assets/img/icon/${this.type}.png")`;
     this.bank.subtractByBlock(this.type);
+    this.engine.rentTick$.subscribe(() => this.bank.subtract(this.rent));
     this.engine.manage.addOffice(this);
   }
 }
