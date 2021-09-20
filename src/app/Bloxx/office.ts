@@ -4,6 +4,10 @@ import { GameService } from '../game.service';
 
 export class Office {
   public readonly type = 'office';
+  private rent = 500;
+  public jobs = 3;
+  public jobFree = 3;
+
   constructor(
     public node: INode,
     private dom: HTMLDivElement,
@@ -12,5 +16,6 @@ export class Office {
   ) {
     this.dom.style.backgroundImage = `url("assets/img/icon/unit.png"), url("assets/img/icon/${this.type}.png")`;
     this.bank.subtractByBlock(this.type);
+    this.engine.manage.addOffice(this);
   }
 }

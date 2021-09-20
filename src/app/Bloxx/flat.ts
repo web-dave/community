@@ -21,8 +21,9 @@ export class Flat {
     this.dom.style.backgroundImage = `url("assets/img/icon/unit.png"), url("assets/img/icon/${this.type}.png")`;
     this.bank.subtractByBlock(this.type);
     this.engine.rentTick$.subscribe(() => this.bank.subtract(this.rent));
-    this.engine.rentTick$.pipe(takeEveryNth(7), first()).subscribe(()=>{
+    this.engine.manage.addTenant(this);
+    this.engine.rentTick$.pipe(takeEveryNth(7), first()).subscribe(() => {
       this.kids = Math.floor(Math.random() * 4);
-    })
+    });
   }
 }

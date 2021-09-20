@@ -3,6 +3,7 @@ import { IBloxx } from 'models/bloxx.interface';
 import { IFloor } from 'models/floor.interface';
 import { interval } from 'rxjs';
 import { share } from 'rxjs/operators';
+import { ManagementService } from './management.service';
 import { takeEveryNth } from './utils/operators';
 
 @Injectable({
@@ -19,7 +20,7 @@ export class GameService {
   tick$ = interval(2000).pipe(share());
   rentTick$ = this.tick$.pipe(takeEveryNth(7));
 
-  constructor() {
+  constructor(public manage: ManagementService) {
     this.total_floors = [...Array(this.floors_count).keys()].map((i) => ({
       id: i,
       stairs: false,
