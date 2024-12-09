@@ -9,8 +9,17 @@ import { GameService } from './game.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
+  dayLight = 0;
+  timeTable = [1, 2, 3, 4, 3, 2, 1];
   total_floors = this.engine.total_floors;
-  constructor(public engine: GameService, public bank: BankService) {}
+  constructor(public engine: GameService, public bank: BankService) {
+    this.engine.tick$.subscribe(() => {
+      if (this.dayLight === 6) {
+        this.dayLight = -1;
+      }
+      this.dayLight++;
+    });
+  }
 
   updatePointer(icon: IBloxx) {
     this.engine.activeBlock = icon;

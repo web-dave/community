@@ -34,6 +34,7 @@ export class NodeDirective {
           }
           break;
         case 'pointer':
+          console.log(this.stNode);
           break;
         case 'stairs':
           if (this.stNode.unit && !this.stNode.unit?.tenant?.node) {
@@ -97,6 +98,12 @@ export class NodeDirective {
           break;
         default:
           console.error('Unknown Block', this.engine.activeBlock, this.stNode);
+          break;
+      }
+    } else {
+      switch (this.engine.activeBlock) {
+        case 'pointer':
+          console.log(this.stNode);
           break;
       }
     }

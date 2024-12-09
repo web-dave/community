@@ -131,6 +131,9 @@ body {
 
       &.sky-bg {
         background-color: #a1defa;
+        // animation-name: dayLight;
+        // animation-duration: 14s;
+        // animation-iteration-count: infinite;
       }
       /** Nodes **/
       .node-container {
@@ -146,6 +149,19 @@ body {
           &:hover {
             background-color: #e1b746;
             // border: 1px solid #e8e8e8;
+          }
+
+          &.jobsFree-3 {
+            background-color: red;
+          }
+          &.jobsFree-2 {
+            background-color: hotpink;
+          }
+          &.jobsFree-1 {
+            background-color: lime;
+          }
+          &.jobsFree-0 {
+            background-color: transparent;
           }
         }
       }
@@ -213,4 +229,25 @@ body {
 .circle-area {
   background-color: #4a4a4b;
   opacity: 0.1;
+}
+
+@keyframes dayLight {
+  0% {
+    background-color: #27363d;
+  }
+  20% {
+    background-color: #47626e;
+  }
+  40% {
+    background-color: #628c9e;
+  }
+  60% {
+    background-color: #a1defa;
+  }
+  80% {
+    background-color: #628c9e;
+  }
+  100% {
+    background-color: #47626e;
+  }
 }

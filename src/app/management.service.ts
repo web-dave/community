@@ -17,11 +17,18 @@ export class ManagementService {
     this.tenants
       .filter((flat) => flat.adults > flat.jobs)
       .forEach((flat) => {
-        const freeJob = this.offices.find((office) => office.jobFree >= 1);
-        if (freeJob) {
-          freeJob.jobFree -= 1;
+        // const freeJob = this.offices.find((office) => office.jobFree >= 1);
+        const freeJobs = this.offices.filter((office) => office.jobFree >= 1);
+        if (freeJobs.length >= 1) {
+          const freeJob = freeJobs[Math.floor(Math.random() * freeJobs.length)];
+          freeJob.getEmployee();
           flat.jobs += 1;
         }
+
+        // if (freeJob) {
+        //   freeJob.getEmployee();
+        //   flat.jobs += 1;
+        // }
       });
   }
 

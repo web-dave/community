@@ -29,6 +29,9 @@ export class GameService {
         floor: i,
       })),
     }));
+    this.rentTick$.subscribe(() => {
+      this.manage.findJob();
+    });
   }
 
   isAbleToStart(floor: number, node: number): boolean {
