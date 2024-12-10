@@ -22,14 +22,14 @@
         background-color: #ce0808;
         opacity: 0.8;
 
-        background-image: repeating-linear-gradient(
+        background-image: url("../assets/img/icon/unit.png"),
+          repeating-linear-gradient(
             45deg,
             #ee7272 0,
             #ee7272 1px,
-            #550202 0,
-            #550202 50%
-          ),
-          url("../assets/img/icon/unit.png");
+            #ce0808 0,
+            #ce0808 50%
+          );
       }
 
       &.stairs {
@@ -60,15 +60,15 @@
         }
 
         &.couple {
-          background-image: url("../assets/img/icon/unit.png"),
-            url("../assets/img/icon/flat.png"),
-            url("../assets/img/icon/couple.png");
+          background-image: url("../assets/img/icon/couple.png"),
+            url("../assets/img/icon/unit.png"),
+            url("../assets/img/icon/flat.png");
         }
 
         &.family {
-          background-image: url("../assets/img/icon/unit.png"),
-            url("../assets/img/icon/flat.png"),
-            url("../assets/img/icon/family.png");
+          background-image: url("../assets/img/icon/family.png"),
+            url("../assets/img/icon/unit.png"),
+            url("../assets/img/icon/flat.png");
         }
       }
 
