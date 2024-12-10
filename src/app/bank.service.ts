@@ -7,13 +7,13 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class BankService {
   public readonly prizes: { [key: string]: number } = {
-    unit: 3500,
-    stairs: 500,
-    flat: 1500,
-    office: 1500,
-    shopping: 2500,
-    school: 1500,
-    safety: 4500,
+    unit: 5000,
+    stairs: 3000,
+    flat: 30000,
+    office: 50000,
+    shopping: 150000,
+    school: 75000,
+    safety: 75000,
     attractions: 5000,
   };
   private balance = 350000;
@@ -21,11 +21,14 @@ export class BankService {
   bankAccount$ = this.bankAccount$$.asObservable();
 
   isAffordable(block: IBloxx): boolean {
-    console.log(block);
     if (!this.prizes[block]) {
       return false;
     }
-    return this.balance > this.prizes[block];
+    if (this.balance - this.prizes[block] >= 1) {
+      this.subtract(this.prizes[block]);
+      return true;
+    }
+    return false;
   }
   subtractByBlock(block: IBloxx) {
     if (this.prizes[block]) {
@@ -35,13 +38,11 @@ export class BankService {
     }
   }
   subtract(amount: number) {
-    console.log('subtract', amount);
     this.balance -= amount;
     this.bankAccount$$.next(this.balance);
   }
 
   add(amount: number) {
-    console.log(this.balance, amount);
     this.balance += amount;
     this.bankAccount$$.next(this.balance);
   }

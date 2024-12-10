@@ -7,6 +7,7 @@ import { IPerson } from 'models/person.interface';
 import { Person } from '../utils/person';
 
 export class Flat {
+  public price = 30000;
   public readonly type = 'flat';
   private rent = 500;
 
@@ -23,7 +24,7 @@ export class Flat {
     this.dom.classList.add(this.type);
     this.bank.subtractByBlock(this.type);
     this.engine.rentTick$.subscribe(() => this.bank.subtract(this.rent));
-    this.engine.manage.addTenant(this);
+    this.engine.add('flat', this);
     this.engine.rentTick$.pipe(takeEveryNth(7), first()).subscribe(() => {
       this.kids = Math.floor(Math.random() * 4);
       this.dom.classList.add('kids-' + this.kids);

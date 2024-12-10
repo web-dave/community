@@ -5,6 +5,14 @@ import { interval, Subject } from 'rxjs';
 import { share } from 'rxjs/operators';
 import { ManagementService } from './management.service';
 import { takeEveryNth } from './utils/operators';
+import { Unit } from './Bloxx/unit';
+import { Attractions } from './Bloxx/attractions';
+import { Flat } from './Bloxx/flat';
+import { Office } from './Bloxx/office';
+import { Safety } from './Bloxx/safety';
+import { School } from './Bloxx/school';
+import { Shopping } from './Bloxx/shopping';
+import { Stairs } from './Bloxx/stairs';
 
 @Injectable({
   providedIn: 'root',
@@ -106,6 +114,69 @@ export class GameService {
       return true;
     }
     return false;
+  }
+
+  add(
+    block: IBloxx,
+    instance:
+      | Office
+      | Flat
+      | Shopping
+      | School
+      | Safety
+      | Attractions
+      | Unit
+      | Stairs
+  ) {
+    switch (block) {
+      case 'unit':
+        this.manage.addUnit(instance as Unit);
+        this.persistData(block, this.manage.units);
+        break;
+      case 'attractions':
+        this.manage.addAttractions(instance as Attractions);
+        this.persistData(block, this.manage.attractions);
+        break;
+      case 'flat':
+        this.manage.addFlat(instance as Flat);
+        this.persistData(block, this.manage.flats);
+        break;
+      case 'office':
+        this.manage.addOffice(instance as Office);
+        this.persistData(block, this.manage.offices);
+        break;
+      case 'safety':
+        this.manage.addSafety(instance as Safety);
+        this.persistData(block, this.manage.safety);
+        break;
+      case 'school':
+        this.manage.addSchool(instance as School);
+        this.persistData(block, this.manage.school);
+        break;
+      case 'shopping':
+        this.manage.addShopping(instance as Shopping);
+        this.persistData(block, this.manage.shopping);
+        break;
+      case 'stairs':
+        this.manage.addStairs(instance as Stairs);
+        this.persistData(block, this.manage.stairs);
+        break;
+    }
+  }
+
+  persistData(
+    key: IBloxx,
+    data:
+      | Office[]
+      | Flat[]
+      | Shopping[]
+      | School[]
+      | Safety[]
+      | Attractions[]
+      | Unit[]
+      | Stairs[]
+  ) {
+    // localStorage.setItem(key, JSON.stringify(data));
   }
 
   showDialog(data: string[]) {

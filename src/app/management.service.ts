@@ -3,18 +3,30 @@ import { interval } from 'rxjs';
 import { Flat } from './Bloxx/flat';
 import { Office } from './Bloxx/office';
 import { takeEveryNth } from './utils/operators';
+import { Shopping } from './Bloxx/shopping';
+import { School } from './Bloxx/school';
+import { Safety } from './Bloxx/safety';
+import { Attractions } from './Bloxx/attractions';
+import { Unit } from './Bloxx/unit';
+import { Stairs } from './Bloxx/stairs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ManagementService {
   offices: Office[] = [];
-  tenants: Flat[] = [];
+  flats: Flat[] = [];
+  shopping: Shopping[] = [];
+  school: School[] = [];
+  safety: Safety[] = [];
+  attractions: Attractions[] = [];
+  units: Unit[] = [];
+  stairs: Stairs[] = [];
 
   constructor() {}
 
   findJob() {
-    this.tenants
+    this.flats
       .filter((flat) => flat.adults > flat.jobs)
       .forEach((flat) => {
         // const freeJob = this.offices.find((office) => office.jobFree >= 1);
@@ -37,8 +49,38 @@ export class ManagementService {
     this.findJob();
   }
 
-  addTenant(t: Flat) {
-    this.tenants.push(t);
+  addFlat(t: Flat) {
+    this.flats.push(t);
+    this.findJob();
+  }
+
+  addShopping(t: Shopping) {
+    this.shopping.push(t);
+    this.findJob();
+  }
+
+  addSchool(t: School) {
+    this.school.push(t);
+    this.findJob();
+  }
+
+  addSafety(t: Safety) {
+    this.safety.push(t);
+    this.findJob();
+  }
+
+  addAttractions(t: Attractions) {
+    this.attractions.push(t);
+    this.findJob();
+  }
+
+  addUnit(t: Unit) {
+    this.units.push(t);
+    this.findJob();
+  }
+
+  addStairs(t: Stairs) {
+    this.stairs.push(t);
     this.findJob();
   }
 }

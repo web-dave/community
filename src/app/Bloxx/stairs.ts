@@ -3,6 +3,7 @@ import { BankService } from '../bank.service';
 import { GameService } from '../game.service';
 
 export class Stairs {
+  public price = 3000;
   prize = 500;
   public readonly type = 'stairs';
   constructor(

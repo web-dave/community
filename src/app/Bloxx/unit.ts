@@ -11,6 +11,7 @@ import { Shopping } from './shopping';
 import { Stairs } from './stairs';
 
 export class Unit {
+  public price = 5000;
   private reachable = false;
   public tenant!:
     | Stairs
@@ -29,15 +30,12 @@ export class Unit {
     private engine: GameService
   ) {
     this.name = this.type + '-' + this.node.floor + '-' + this.node.id;
-    // this.dom.style.backgroundImage = 'url("assets/img/icon/unit.png")';
     this.bank.subtractByBlock(this.type);
     this.dom.classList.add(this.type);
 
-    this.engine.tick$.pipe(takeWhile((val) => !this.reachable)).subscribe(
-      () => this.draw(),
-      (err) => console.error(err),
-      () => console.log('done')
-    );
+    this.engine.tick$
+      .pipe(takeWhile((val) => !this.reachable))
+      .subscribe(() => this.draw());
   }
 
   draw() {

@@ -9,6 +9,7 @@ import { Office } from './Bloxx/office';
 import { Shopping } from './Bloxx/shopping';
 import { School } from './Bloxx/school';
 import { Safety } from './Bloxx/safety';
+import { Attractions } from './Bloxx/attractions';
 
 @Directive({
   selector: '[stNode]',
@@ -86,6 +87,16 @@ export class NodeDirective {
             );
           }
           break;
+        case 'attractions':
+          if (this.stNode.unit && !this.stNode.unit?.tenant?.node) {
+            this.stNode.unit.tenant = new Attractions(
+              this.stNode,
+              this.elementRef.nativeElement as HTMLDivElement,
+              this.engine,
+              this.bank
+            );
+          }
+          break;
         case 'safety':
           if (this.stNode.unit && !this.stNode.unit?.tenant?.node) {
             this.stNode.unit.tenant = new Safety(
@@ -103,10 +114,21 @@ export class NodeDirective {
     } else {
       switch (this.engine.activeBlock) {
         case 'pointer':
-          console.log(this.stNode.unit?.dom.classList);
-          this.engine.showDialog(
-            this.stNode.unit?.dom.classList.value.split(' ') || ([] as string[])
-          );
+          if (this.stNode.unit) {
+            if (
+              this.stNode.unit.dom.classList.contains('flat') ||
+              this.stNode.unit.dom.classList.contains('office') ||
+              this.stNode.unit.dom.classList.contains('shopping') ||
+              this.stNode.unit.dom.classList.contains('school') ||
+              this.stNode.unit.dom.classList.contains('safety') ||
+              this.stNode.unit.dom.classList.contains('attractions')
+            ) {
+              const classList = this.stNode.unit.dom.classList.value
+                .replace('node unit ', '')
+                .split(' ');
+              this.engine.showDialog(classList);
+            }
+          }
           break;
       }
     }

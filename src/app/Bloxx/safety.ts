@@ -3,6 +3,7 @@ import { BankService } from '../bank.service';
 import { GameService } from '../game.service';
 
 export class Safety {
+  public price = 75000;
   public readonly type = 'safety';
   constructor(
     public node: INode,
@@ -12,5 +13,6 @@ export class Safety {
   ) {
     this.dom.classList.add(this.type);
     this.bank.subtractByBlock(this.type);
+    this.engine.add('safety', this);
   }
 }

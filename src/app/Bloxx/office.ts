@@ -3,6 +3,7 @@ import { BankService } from '../bank.service';
 import { GameService } from '../game.service';
 
 export class Office {
+  public price = 50000;
   public readonly type = 'office';
   private rent = 500;
   private salary = 750;
@@ -24,7 +25,7 @@ export class Office {
       this.bank.add((this.jobs - this.jobFree) * this.salary);
       this.cleanOrDity();
     });
-    this.engine.manage.addOffice(this);
+    this.engine.add('office', this);
   }
 
   getEmployee() {
@@ -39,7 +40,6 @@ export class Office {
     this.dom.classList.remove('jobsFree-1');
     this.dom.classList.remove('jobsFree-0');
     this.dom.classList.add('jobsFree-' + this.jobFree);
-    console.log('jobsFree-' + this.jobFree, this.dom.classList);
   }
 
   cleanOrDity() {
