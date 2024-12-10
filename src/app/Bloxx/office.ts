@@ -6,7 +6,7 @@ export class Office {
   public price = 50000;
   public readonly type = 'office';
   private rent = 500;
-  private salary = 750;
+  private salary = 2500;
   public jobs = 3;
   public jobFree = 3;
   public vacant = 0;
@@ -17,11 +17,11 @@ export class Office {
     private engine: GameService,
     private bank: BankService
   ) {
-    this.bank.subtractByBlock(this.type);
+    this.bank.subtract(this.price);
     this.dom.classList.add(this.type);
     this.checkEmployeeStaus();
     this.engine.rentTick$.subscribe(() => {
-      this.bank.subtract(this.rent);
+      this.bank.add(this.rent);
       this.bank.add((this.jobs - this.jobFree) * this.salary);
       this.cleanOrDity();
     });

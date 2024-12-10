@@ -22,8 +22,8 @@ export class Flat {
     private bank: BankService
   ) {
     this.dom.classList.add(this.type);
-    this.bank.subtractByBlock(this.type);
-    this.engine.rentTick$.subscribe(() => this.bank.subtract(this.rent));
+    this.bank.subtract(this.price);
+    this.engine.rentTick$.subscribe(() => this.bank.add(this.rent));
     this.engine.add('flat', this);
     this.engine.rentTick$.pipe(takeEveryNth(7), first()).subscribe(() => {
       this.kids = Math.floor(Math.random() * 4);

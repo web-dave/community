@@ -14,6 +14,6 @@ export class Stairs {
   ) {
     this.dom.classList.add(this.type);
     this.engine.connectFloor(this.node.floor);
-    this.bank.subtractByBlock('stairs');
+    this.bank.subtract(this.price);
   }
 }

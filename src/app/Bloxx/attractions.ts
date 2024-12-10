@@ -12,7 +12,7 @@ export class Attractions {
     private bank: BankService
   ) {
     this.dom.classList.add(this.type);
-    this.bank.subtractByBlock(this.type);
+    this.bank.subtract(this.price);
     this.engine.add('attractions', this);
   }
 }

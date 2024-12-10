@@ -30,7 +30,7 @@ export class Unit {
     private engine: GameService
   ) {
     this.name = this.type + '-' + this.node.floor + '-' + this.node.id;
-    this.bank.subtractByBlock(this.type);
+    this.bank.subtract(this.price);
     this.dom.classList.add(this.type);
 
     this.engine.tick$

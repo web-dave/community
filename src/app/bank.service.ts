@@ -24,11 +24,8 @@ export class BankService {
     if (!this.prizes[block]) {
       return false;
     }
-    if (this.balance - this.prizes[block] >= 1) {
-      this.subtract(this.prizes[block]);
-      return true;
-    }
-    return false;
+
+    return this.balance - this.prizes[block] >= 1;
   }
   subtractByBlock(block: IBloxx) {
     if (this.prizes[block]) {
