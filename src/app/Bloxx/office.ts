@@ -9,7 +9,6 @@ export class Office {
   public jobs = 3;
   public jobFree = 3;
   public vacant = 0;
-  private background = `url("assets/img/icon/unit.png"), url("assets/img/icon/office.png")`;
 
   constructor(
     public node: INode,
@@ -17,25 +16,30 @@ export class Office {
     private engine: GameService,
     private bank: BankService
   ) {
-    this.dom.style.backgroundImage = this.background;
     this.bank.subtractByBlock(this.type);
+    this.dom.classList.add(this.type);
+    this.checkEmployeeStaus();
     this.engine.rentTick$.subscribe(() => {
       this.bank.subtract(this.rent);
       this.bank.add((this.jobs - this.jobFree) * this.salary);
       this.cleanOrDity();
     });
     this.engine.manage.addOffice(this);
-    this.dom.classList.add('jobsFree-3');
   }
 
   getEmployee() {
     this.jobFree -= 1;
+    this.checkEmployeeStaus();
+    this.cleanOrDity();
+  }
+
+  checkEmployeeStaus() {
     this.dom.classList.remove('jobsFree-3');
     this.dom.classList.remove('jobsFree-2');
     this.dom.classList.remove('jobsFree-1');
     this.dom.classList.remove('jobsFree-0');
     this.dom.classList.add('jobsFree-' + this.jobFree);
-    this.cleanOrDity();
+    console.log('jobsFree-' + this.jobFree, this.dom.classList);
   }
 
   cleanOrDity() {
@@ -44,11 +48,11 @@ export class Office {
     } else {
       this.vacant = 0;
     }
+    this.checkEmployeeStaus();
     if (this.vacant >= 3) {
-      this.dom.style.backgroundImage =
-        this.background + ', url("assets/img/icon/dirt.png")';
+      this.dom.classList.add('dirty');
     } else {
-      this.dom.style.backgroundImage = this.background;
+      this.dom.classList.remove('dirty');
     }
   }
 }

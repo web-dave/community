@@ -1,59 +1,58 @@
+<div class="toolbar">
+  <div
+    class="toolbar-icon unit"
+    [ngClass]="{ active: engine.activeBlock === 'unit' }"
+    (click)="updatePointer('unit')"
+  ></div>
+  <div
+    class="toolbar-icon stairs"
+    [ngClass]="{ active: engine.activeBlock === 'stairs' }"
+    (click)="updatePointer('stairs')"
+  ></div>
+  <div class="toolbar-divider"></div>
+  <div
+    class="toolbar-icon flat"
+    [ngClass]="{ active: engine.activeBlock === 'flat' }"
+    (click)="updatePointer('flat')"
+  ></div>
+  <div
+    class="toolbar-icon office"
+    [ngClass]="{ active: engine.activeBlock === 'office' }"
+    (click)="updatePointer('office')"
+  ></div>
+  <div
+    class="toolbar-icon shopping"
+    [ngClass]="{ active: engine.activeBlock === 'shopping' }"
+    (click)="updatePointer('shopping')"
+  ></div>
+  <div class="toolbar-divider"></div>
+  <div
+    class="toolbar-icon school"
+    [ngClass]="{ active: engine.activeBlock === 'school' }"
+    (click)="updatePointer('school')"
+  ></div>
+  <div
+    class="toolbar-icon safety"
+    [ngClass]="{ active: engine.activeBlock === 'safety' }"
+    (click)="updatePointer('safety')"
+  ></div>
+  <div class="toolbar-divider"></div>
+  <div
+    class="toolbar-icon attractions"
+    [ngClass]="{ active: engine.activeBlock === 'attractions' }"
+    (click)="updatePointer('attractions')"
+  ></div>
+  <div class="toolbar-divider"></div>
+  <div
+    class="toolbar-icon pointer"
+    [ngClass]="{ active: engine.activeBlock === 'pointer' }"
+    (click)="updatePointer('pointer')"
+  ></div>
+  <div class="toolbar-divider"></div>
+  <div class="wallet">{{ bank.bankAccount$ | async }}</div>
+</div>
 <div class="gameboard-outer-border">
   <div class="gameboard">
-    <div class="toolbar">
-      <div
-        class="toolbar-icon unit"
-        [ngClass]="{ active: engine.activeBlock === 'unit' }"
-        (click)="updatePointer('unit')"
-      ></div>
-      <div
-        class="toolbar-icon stairs"
-        [ngClass]="{ active: engine.activeBlock === 'stairs' }"
-        (click)="updatePointer('stairs')"
-      ></div>
-      <div class="toolbar-divider"></div>
-      <div
-        class="toolbar-icon flat"
-        [ngClass]="{ active: engine.activeBlock === 'flat' }"
-        (click)="updatePointer('flat')"
-      ></div>
-      <div
-        class="toolbar-icon office"
-        [ngClass]="{ active: engine.activeBlock === 'office' }"
-        (click)="updatePointer('office')"
-      ></div>
-      <div
-        class="toolbar-icon shopping"
-        [ngClass]="{ active: engine.activeBlock === 'shopping' }"
-        (click)="updatePointer('shopping')"
-      ></div>
-      <div class="toolbar-divider"></div>
-      <div
-        class="toolbar-icon school"
-        [ngClass]="{ active: engine.activeBlock === 'school' }"
-        (click)="updatePointer('school')"
-      ></div>
-      <div
-        class="toolbar-icon safety"
-        [ngClass]="{ active: engine.activeBlock === 'safety' }"
-        (click)="updatePointer('safety')"
-      ></div>
-      <div class="toolbar-divider"></div>
-      <div
-        class="toolbar-icon attractions"
-        [ngClass]="{ active: engine.activeBlock === 'attractions' }"
-        (click)="updatePointer('attractions')"
-      ></div>
-      <div class="toolbar-divider"></div>
-      <div
-        class="toolbar-icon pointer"
-        [ngClass]="{ active: engine.activeBlock === 'pointer' }"
-        (click)="updatePointer('pointer')"
-      ></div>
-      <div class="toolbar-divider"></div>
-      <div class="wallet">{{ bank.bankAccount$ | async }}</div>
-    </div>
-
     <div
       *ngFor="let floor of total_floors"
       [id]="'floor_' + floor.id"

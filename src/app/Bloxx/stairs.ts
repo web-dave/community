@@ -4,14 +4,14 @@ import { GameService } from '../game.service';
 
 export class Stairs {
   prize = 500;
-  name = 'stairs';
+  public readonly type = 'stairs';
   constructor(
     public node: INode,
     private dom: HTMLDivElement,
     private engine: GameService,
     private bank: BankService
   ) {
-    this.dom.style.backgroundImage = `url("assets/img/icon/unit.png"), url("assets/img/icon/stairs.png")`;
+    this.dom.classList.add(this.type);
     this.engine.connectFloor(this.node.floor);
     this.bank.subtractByBlock('stairs');
   }

@@ -1,0 +1,34 @@
+@keyframes dayLight {
+  0% {
+    background-color: #252b2d;
+  }
+  50% {
+    background-color: #a1defa;
+  }
+  100% {
+    background-color: #252b2d;
+  }
+}
+
+.floor {
+  display: flex;
+  height: 50px;
+
+  &.underground-bg {
+    background-color: #552702;
+    opacity: 0.8;
+    background-size: 10px 10px;
+    background-image: repeating-linear-gradient(
+      45deg,
+      #464544 0,
+      #464544 1px,
+      #552702 0,
+      #552702 50%
+    );
+  }
+
+  &.sky-bg {
+    background-color: #a1defa;
+    animation: dayLight 14s infinite;
+  }
+}

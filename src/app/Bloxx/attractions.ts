@@ -10,7 +10,7 @@ export class Attractions {
     private engine: GameService,
     private bank: BankService
   ) {
-    this.dom.style.backgroundImage = `url("assets/img/icon/unit.png"), url("assets/img/icon/${this.type}.png")`;
+    this.dom.classList.add(this.type);
     this.bank.subtractByBlock(this.type);
   }
 }

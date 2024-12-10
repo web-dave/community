@@ -1,0 +1,135 @@
+.node-container {
+  z-index: 100;
+  width: auto;
+  margin: 0 auto;
+  display: flex;
+
+  .node {
+    display: inline-block;
+    width: 48px;
+    height: 50px;
+    z-index: 101;
+    background-size: cover;
+
+    &:hover {
+      background-color: #e1b746;
+    }
+
+    &.unit {
+      background-image: url("../assets/img/icon/unit.png");
+
+      &.no-connection {
+        background-color: #ce0808;
+        opacity: 0.8;
+
+        background-image: repeating-linear-gradient(
+            45deg,
+            #ee7272 0,
+            #ee7272 1px,
+            #550202 0,
+            #550202 50%
+          ),
+          url("../assets/img/icon/unit.png");
+      }
+
+      &.stairs {
+        background-image: url("../assets/img/icon/unit.png"),
+          url("../assets/img/icon/stairs.png");
+      }
+
+      &.flat {
+        background-image: url("../assets/img/icon/unit.png"),
+          url("../assets/img/icon/flat.png");
+        &.dirty {
+          background-image: url("../assets/img/icon/unit.png"),
+            url("../assets/img/icon/flat.png"),
+            url("../assets/img/icon/dirt.png");
+
+          &.couple {
+            background-image: url("../assets/img/icon/unit.png"),
+              url("../assets/img/icon/flat.png"),
+              url("../assets/img/icon/couple.png"),
+              url("../assets/img/icon/dirt.png");
+          }
+          &.family {
+            background-image: url("../assets/img/icon/unit.png"),
+              url("../assets/img/icon/flat.png"),
+              url("../assets/img/icon/family.png"),
+              url("../assets/img/icon/dirt.png");
+          }
+        }
+
+        &.couple {
+          background-image: url("../assets/img/icon/unit.png"),
+            url("../assets/img/icon/flat.png"),
+            url("../assets/img/icon/couple.png");
+        }
+
+        &.family {
+          background-image: url("../assets/img/icon/unit.png"),
+            url("../assets/img/icon/flat.png"),
+            url("../assets/img/icon/family.png");
+        }
+      }
+
+      &.shopping {
+        background-image: url("../assets/img/icon/unit.png"),
+          url("../assets/img/icon/shopping.png");
+        &.dirty {
+          background-image: url("../assets/img/icon/unit.png"),
+            url("../assets/img/icon/shopping.png"),
+            url("../assets/img/icon/dirt.png");
+        }
+      }
+
+      &.school {
+        background-image: url("../assets/img/icon/unit.png"),
+          url("../assets/img/icon/school.png");
+        &.dirty {
+          background-image: url("../assets/img/icon/unit.png"),
+            url("../assets/img/icon/school.png"),
+            url("../assets/img/icon/dirt.png");
+        }
+      }
+
+      &.safety {
+        background-image: url("../assets/img/icon/unit.png"),
+          url("../assets/img/icon/safety.png");
+        &.dirty {
+          background-image: url("../assets/img/icon/unit.png"),
+            url("../assets/img/icon/safety.png"),
+            url("../assets/img/icon/dirt.png");
+        }
+      }
+
+      &.attractions {
+        background-image: url("../assets/img/icon/unit.png"),
+          url("../assets/img/icon/attractions.png");
+        &.dirty {
+          background-image: url("../assets/img/icon/unit.png"),
+            url("../assets/img/icon/attractions.png"),
+            url("../assets/img/icon/dirt.png");
+        }
+      }
+
+      &.office {
+        background-image: url("../assets/img/icon/unit.png"),
+          url("../assets/img/icon/office.png");
+        &.dirty {
+          background-image: url("../assets/img/icon/unit.png"),
+            url("../assets/img/icon/office.png"),
+            url("../assets/img/icon/dirt.png");
+        }
+        &.jobsFree-3 {
+          background-color: red;
+        }
+        &.jobsFree-2 {
+          background-color: hotpink;
+        }
+        &.jobsFree-1 {
+          background-color: lime;
+        }
+      }
+    }
+  }
+}

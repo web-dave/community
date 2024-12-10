@@ -1,0 +1,72 @@
+.toolbar {
+  top: 0;
+  left: 0;
+  width: auto;
+  padding: 10px 0 6px 0;
+  position: sticky;
+  background-color: #4a4a4b;
+  z-index: 102;
+  .toolbar-icon {
+    height: 48px;
+    width: 48px;
+    margin-left: 10px;
+    display: inline-block;
+    z-index: 102;
+    &.active {
+      background-color: #e1b746;
+    }
+  }
+  .toolbar-icon:hover {
+    cursor: pointer;
+  }
+  .toolbar-divider {
+    background-color: #848586;
+    height: 46px;
+    width: 3px;
+    margin: 0 0 0 23px;
+    display: inline-block;
+  }
+
+  .wallet {
+    color: #e7e7e7;
+    font-size: 2em;
+    height: 48px;
+    width: 48px;
+    margin-left: 10px;
+    display: inline-block;
+    z-index: 102;
+    vertical-align: bottom;
+
+    &::after {
+      content: "€";
+    }
+  }
+
+  .unit {
+    background-image: url("../assets/img/icon/unit.png");
+  }
+  .stairs {
+    background-image: url("../assets/img/icon/stairs.png");
+  }
+  .flat {
+    background-image: url("../assets/img/icon/flat.png");
+  }
+  .office {
+    background-image: url("../assets/img/icon/office.png");
+  }
+  .shopping {
+    background-image: url("../assets/img/icon/shopping.png");
+  }
+  .school {
+    background-image: url("../assets/img/icon/school.png");
+  }
+  .safety {
+    background-image: url("../assets/img/icon/safety.png");
+  }
+  .pointer {
+    background-image: url("../assets/img/icon/pointer.png");
+  }
+  .attractions {
+    background-image: url("../assets/img/icon/attractions.png");
+  }
+}

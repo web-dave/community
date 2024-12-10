@@ -103,7 +103,7 @@ export class NodeDirective {
     } else {
       switch (this.engine.activeBlock) {
         case 'pointer':
-          console.log(this.stNode);
+          console.log(this.stNode.unit?.dom.classList);
           break;
       }
     }

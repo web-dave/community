@@ -20,16 +20,18 @@ export class Unit {
     | Safety
     | School
     | Shopping;
+  public readonly type = 'unit';
   public name: string = '';
   constructor(
     public node: INode,
-    private dom: HTMLDivElement,
+    public dom: HTMLDivElement,
     private bank: BankService,
     private engine: GameService
   ) {
-    this.name = 'unit-' + this.node.floor + '-' + this.node.id;
-    this.dom.style.backgroundImage = 'url("assets/img/icon/unit.png")';
-    this.bank.subtractByBlock('unit');
+    this.name = this.type + '-' + this.node.floor + '-' + this.node.id;
+    // this.dom.style.backgroundImage = 'url("assets/img/icon/unit.png")';
+    this.bank.subtractByBlock(this.type);
+    this.dom.classList.add(this.type);
 
     this.engine.tick$.pipe(takeWhile((val) => !this.reachable)).subscribe(
       () => this.draw(),
@@ -41,6 +43,7 @@ export class Unit {
   draw() {
     if (!this.engine.isConnected(this.node.floor)) {
       this.dom.classList.add('no-connection');
+      this.reachable = false;
     } else {
       this.dom.classList.remove('no-connection');
       this.reachable = true;

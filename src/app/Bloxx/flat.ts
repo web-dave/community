@@ -8,7 +8,6 @@ import { Person } from '../utils/person';
 
 export class Flat {
   public readonly type = 'flat';
-  private background = `url("assets/img/icon/unit.png"), url("assets/img/icon/${this.type}.png")`;
   private rent = 500;
 
   adults = 2;
@@ -21,20 +20,19 @@ export class Flat {
     private engine: GameService,
     private bank: BankService
   ) {
-    this.dom.style.backgroundImage = this.background; // + ', url("assets/img/icon/couple.png")';
+    this.dom.classList.add(this.type);
     this.bank.subtractByBlock(this.type);
     this.engine.rentTick$.subscribe(() => this.bank.subtract(this.rent));
     this.engine.manage.addTenant(this);
     this.engine.rentTick$.pipe(takeEveryNth(7), first()).subscribe(() => {
       this.kids = Math.floor(Math.random() * 4);
-      console.log(this.kids);
-      // if (this.kids === 0) {
-      //   this.dom.style.backgroundImage =
-      //     this.background + ', url("assets/img/icon/couple.png")';
-      // } else {
-      //   this.dom.style.backgroundImage =
-      //     this.background + ', url("assets/img/icon/family.png")';
-      // }
+      this.dom.classList.add('kids-' + this.kids);
+      // console.log('kids:', this.kids);
+      if (this.kids === 0) {
+        this.dom.classList.add('couple');
+      } else {
+        this.dom.classList.add('family');
+      }
     });
   }
 }
