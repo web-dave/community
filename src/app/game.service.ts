@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IBloxx } from 'models/bloxx.interface';
 import { IFloor } from 'models/floor.interface';
-import { interval } from 'rxjs';
+import { interval, Subject } from 'rxjs';
 import { share } from 'rxjs/operators';
 import { ManagementService } from './management.service';
 import { takeEveryNth } from './utils/operators';
@@ -16,6 +16,7 @@ export class GameService {
   unit_count = 25;
   activeBlock: IBloxx = 'unit';
   total_floors: IFloor[] = [];
+  dialogData$ = new Subject<string[]>();
 
   tick$ = interval(2000).pipe(share());
   rentTick$ = this.tick$.pipe(takeEveryNth(7));
@@ -105,5 +106,10 @@ export class GameService {
       return true;
     }
     return false;
+  }
+
+  showDialog(data: string[]) {
+    const value = data.map((v) => v.replace('-', ': '));
+    this.dialogData$.next(value);
   }
 }

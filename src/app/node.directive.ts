@@ -104,6 +104,9 @@ export class NodeDirective {
       switch (this.engine.activeBlock) {
         case 'pointer':
           console.log(this.stNode.unit?.dom.classList);
+          this.engine.showDialog(
+            this.stNode.unit?.dom.classList.value.split(' ') || ([] as string[])
+          );
           break;
       }
     }

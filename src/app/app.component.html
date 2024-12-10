@@ -51,6 +51,14 @@
   <div class="toolbar-divider"></div>
   <div class="wallet">{{ bank.bankAccount$ | async }}</div>
 </div>
+<dialog #dialog>
+  <div (click)="dialog.close()">X</div>
+  <table>
+    <tr *ngFor="let data of dialogData$ | async">
+      <td>{{ data }}</td>
+    </tr>
+  </table>
+</dialog>
 <div class="gameboard-outer-border">
   <div class="gameboard">
     <div
@@ -72,12 +80,3 @@
     <div class="bus"></div>
   </div>
 </div>
-<!-- <span class="material-icons-two-tone"> laptop </span>
-<span class="material-icons-two-tone"> weekend </span>
-<span class="material-icons-two-tone"> school </span>
-<span class="material-icons-two-tone"> shopping_cart </span>
-<span class="material-icons-two-tone"> stairs </span>
-<span class="material-icons-two-tone"> directions_bus </span>
-<span class="material-icons-two-tone"> health_and_safety </span>
-<span class="material-icons-two-tone"> attractions </span>
-<span class="material-icons-two-tone"> dangerous </span> -->
