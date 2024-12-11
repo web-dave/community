@@ -5,6 +5,7 @@ import { GameService } from '../game.service';
 export class Attractions {
   public price = 50000;
   public readonly type = 'attractions';
+  public id = new Date().getTime();
   constructor(
     public node: INode,
     private dom: HTMLDivElement,

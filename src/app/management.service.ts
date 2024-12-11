@@ -33,14 +33,9 @@ export class ManagementService {
         const freeJobs = this.offices.filter((office) => office.jobFree >= 1);
         if (freeJobs.length >= 1) {
           const freeJob = freeJobs[Math.floor(Math.random() * freeJobs.length)];
-          freeJob.getEmployee();
-          flat.jobs += 1;
+          freeJob.getEmployee(flat);
+          flat.getAJob(freeJob);
         }
-
-        // if (freeJob) {
-        //   freeJob.getEmployee();
-        //   flat.jobs += 1;
-        // }
       });
   }
 
@@ -49,8 +44,29 @@ export class ManagementService {
     this.findJob();
   }
 
+  destroyOffice(t: Office) {
+    let index = this.offices.map((o) => o.id).indexOf(t.id);
+    this.offices.splice(index, 1);
+    t.destroy();
+    if (t.node.unit?.tenant) {
+      t.node.unit.tenant = undefined;
+    }
+    this.findJob();
+  }
+
   addFlat(t: Flat) {
     this.flats.push(t);
+    this.findJob();
+  }
+
+  destroyFlat(t: Flat) {
+    let index = this.flats.map((f) => f.id).indexOf(t.id);
+    this.flats.splice(index, 1);
+    t.destroy();
+
+    if (t.node.unit?.tenant) {
+      t.node.unit.tenant = undefined;
+    }
     this.findJob();
   }
 
@@ -77,6 +93,7 @@ export class ManagementService {
   addUnit(t: Unit) {
     this.units.push(t);
     this.findJob();
+    console.log(this);
   }
 
   addStairs(t: Stairs) {

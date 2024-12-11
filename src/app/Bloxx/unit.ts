@@ -13,14 +13,16 @@ import { Stairs } from './stairs';
 export class Unit {
   public price = 5000;
   private reachable = false;
-  public tenant!:
+  public id = new Date().getTime();
+  public tenant:
     | Stairs
     | Office
     | Attractions
     | Flat
     | Safety
     | School
-    | Shopping;
+    | Shopping
+    | undefined;
   public readonly type = 'unit';
   public name: string = '';
   constructor(
@@ -36,6 +38,8 @@ export class Unit {
     this.engine.tick$
       .pipe(takeWhile((val) => !this.reachable))
       .subscribe(() => this.draw());
+
+    this.engine.add(this.type, this);
   }
 
   draw() {

@@ -4,7 +4,8 @@ import { GameService } from '../game.service';
 
 export class Stairs {
   public price = 3000;
-  prize = 500;
+  public id = new Date().getTime();
+
   public readonly type = 'stairs';
   constructor(
     public node: INode,

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { IBloxx } from 'models/bloxx.interface';
 import { IFloor } from 'models/floor.interface';
 import { interval, Subject } from 'rxjs';
-import { share } from 'rxjs/operators';
+import { share, tap } from 'rxjs/operators';
 import { ManagementService } from './management.service';
 import { takeEveryNth } from './utils/operators';
 import { Unit } from './Bloxx/unit';
@@ -27,7 +27,10 @@ export class GameService {
   dialogData$ = new Subject<string[]>();
 
   tick$ = interval(2000).pipe(share());
-  rentTick$ = this.tick$.pipe(takeEveryNth(7));
+  rentTick$ = this.tick$.pipe(
+    takeEveryNth(7),
+    tap((i) => console.log(i, this.manage))
+  );
 
   constructor(public manage: ManagementService) {
     this.total_floors = [...Array(this.floors_count).keys()].map((i) => ({
@@ -160,6 +163,38 @@ export class GameService {
       case 'stairs':
         this.manage.addStairs(instance as Stairs);
         this.persistData(block, this.manage.stairs);
+        break;
+    }
+  }
+
+  destroy(
+    block: IBloxx,
+    instance:
+      | Office
+      | Flat
+      | Shopping
+      | School
+      | Safety
+      | Attractions
+      | Unit
+      | Stairs
+  ) {
+    switch (block) {
+      case 'flat':
+        this.manage.destroyFlat(instance as Flat);
+        this.persistData(block, this.manage.flats);
+        break;
+      case 'office':
+        this.manage.destroyOffice(instance as Office);
+        this.persistData(block, this.manage.offices);
+        break;
+      case 'safety':
+        break;
+      case 'school':
+        break;
+      case 'shopping':
+        break;
+      case 'stairs':
         break;
     }
   }

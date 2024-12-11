@@ -69,6 +69,12 @@
           background-image: url("../assets/img/icon/family.png"),
             url("../assets/img/icon/unit.png"),
             url("../assets/img/icon/flat.png");
+
+          &.no-school {
+            background-image: url("../assets/img/icon/no-school.png"),
+              url("../assets/img/icon/flat.png"),
+              url("../assets/img/icon/unit.png");
+          }
         }
       }
 
@@ -119,6 +125,13 @@
           background-image: url("../assets/img/icon/unit.png"),
             url("../assets/img/icon/office.png"),
             url("../assets/img/icon/dirt.png");
+
+          &.dangerous {
+            background-image: url("../assets/img/icon/closing.png"),
+              url("../assets/img/icon/office.png"),
+              url("../assets/img/icon/unit.png"),
+              url("../assets/img/icon/dirt.png");
+          }
         }
         &.jobsFree-3 {
           background-color: red;
