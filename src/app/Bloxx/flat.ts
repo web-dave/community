@@ -65,8 +65,8 @@ export class Flat {
   }
 
   getAJob(office: Office) {
-    this.jobs++;
     this.offices.push(office);
+    this.jobs = this.adults - this.offices.length;
   }
 
   destroy() {

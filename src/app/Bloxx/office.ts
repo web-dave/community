@@ -73,8 +73,8 @@ export class Office {
 
   leave(flat: Flat) {
     const index = this.flats.map((f) => f.id).indexOf(this.id);
-    this.jobFree++;
     this.flats.splice(index, 1);
+    this.jobFree = 3 - this.flats.length;
     this.checkEmployeeStaus();
   }
 
