@@ -8,7 +8,7 @@ import { School } from './Bloxx/school';
 import { Safety } from './Bloxx/safety';
 import { Attractions } from './Bloxx/attractions';
 import { Unit } from './Bloxx/unit';
-import { Stairs } from './Bloxx/stairs';
+import { Elevator } from './Bloxx/elevator';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +21,7 @@ export class ManagementService {
   safety: Safety[] = [];
   attractions: Attractions[] = [];
   units: Unit[] = [];
-  stairs: Stairs[] = [];
+  elevator: Elevator[] = [];
 
   constructor() {}
 
@@ -96,8 +96,8 @@ export class ManagementService {
     console.log(this);
   }
 
-  addStairs(t: Stairs) {
-    this.stairs.push(t);
-    this.findJob();
+  addElevator(t: Elevator) {
+    this.elevator.push(t);
+    this.manage();
   }
 }

@@ -5,9 +5,9 @@
     (click)="updatePointer('unit')"
   ></div>
   <div
-    class="toolbar-icon stairs"
-    [ngClass]="{ active: engine.activeBlock === 'stairs' }"
-    (click)="updatePointer('stairs')"
+    class="toolbar-icon elevator"
+    [ngClass]="{ active: engine.activeBlock === 'elevator' }"
+    (click)="updatePointer('elevator')"
   ></div>
   <div class="toolbar-divider"></div>
   <div
@@ -55,31 +55,31 @@
   <div (click)="dialog.close()">X</div>
   <table>
     @for (data of dialogData$ | async; track data) {
-      <tr>
-        <td>{{ data }}</td>
-      </tr>
+    <tr>
+      <td>{{ data }}</td>
+    </tr>
     }
   </table>
 </dialog>
 <div class="gameboard-outer-border">
   <div class="gameboard">
     @for (floor of total_floors; track floor) {
-      <div
-        [id]="'floor_' + floor.id"
-        class="floor"
-        [class]="floor.id > 10 ? 'underground-bg ubg-' + floor.id : 'sky-bg'"
-        >
-        <div class="node-container">
-          @for (node of floor.nodes; track node) {
-            <div
-              class="node"
-              [stNode]="node"
-              [connected]="floor.stairs"
-              [id]="'node_' + floor.id + '_' + node.id"
-            ></div>
-          }
-        </div>
+    <div
+      [id]="'floor_' + floor.id"
+      class="floor"
+      [class]="floor.id > 10 ? 'underground-bg ubg-' + floor.id : 'sky-bg'"
+    >
+      <div class="node-container">
+        @for (node of floor.nodes; track node) {
+        <div
+          class="node"
+          [stNode]="node"
+          [connected]="floor.elevator"
+          [id]="'node_' + floor.id + '_' + node.id"
+        ></div>
+        }
       </div>
+    </div>
     }
     <div class="bus"></div>
   </div>

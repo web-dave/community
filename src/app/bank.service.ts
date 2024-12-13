@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 
 export const prizes: { [key: string]: number } = {
   unit: 500,
-  stairs: 300,
+  elevator: 300,
   flat: 3000,
   office: 5000,
   shopping: 15000,

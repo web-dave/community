@@ -53,7 +53,6 @@ export class Flat {
     this.engine.rentTick$.pipe(takeEveryNth(7), first()).subscribe(() => {
       this.kids = Math.floor(Math.random() * 4);
       this.dom.classList.add('kids-' + this.kids);
-      // console.log('kids:', this.kids);
       if (this.kids === 0) {
         this.dom.classList.add('couple');
       } else {

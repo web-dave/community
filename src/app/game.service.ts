@@ -12,7 +12,7 @@ import { Office } from './Bloxx/office';
 import { Safety } from './Bloxx/safety';
 import { School } from './Bloxx/school';
 import { Shopping } from './Bloxx/shopping';
-import { Stairs } from './Bloxx/stairs';
+import { Elevator } from './Bloxx/elevator';
 
 @Injectable({
   providedIn: 'root',
@@ -28,21 +28,21 @@ export class GameService {
 
   tick$ = interval(2000).pipe(share());
   rentTick$ = this.tick$.pipe(
-    takeEveryNth(7),
-    tap((i) => console.log(i, this.manage))
+    takeEveryNth(7)
+    // tap((i) => console.log(i, this.manage))
   );
 
   constructor(public manage: ManagementService) {
     this.total_floors = [...Array(this.floors_count).keys()].map((i) => ({
       id: i,
-      stairs: false,
+      elevator: false,
       nodes: [...Array(this.unit_count).keys()].map((j) => ({
         id: j,
         floor: i,
       })),
     }));
     this.rentTick$.subscribe(() => {
-      this.manage.findJob();
+      this.manage.manage();
     });
   }
 
@@ -95,7 +95,7 @@ export class GameService {
   }
 
   connectFloor(floor: number) {
-    this.total_floors[floor].stairs = true;
+    this.total_floors[floor].elevator = true;
   }
 
   isConnected(floor: number): boolean {
@@ -104,15 +104,15 @@ export class GameService {
     }
     if (
       floor <= 9 &&
-      this.total_floors[floor].stairs &&
-      this.total_floors[floor + 1].stairs
+      this.total_floors[floor].elevator &&
+      this.total_floors[floor + 1].elevator
     ) {
       return true;
     }
     if (
       floor >= 11 &&
-      this.total_floors[floor].stairs &&
-      this.total_floors[floor - 1].stairs
+      this.total_floors[floor].elevator &&
+      this.total_floors[floor - 1].elevator
     ) {
       return true;
     }
@@ -129,7 +129,7 @@ export class GameService {
       | Safety
       | Attractions
       | Unit
-      | Stairs
+      | Elevator
   ) {
     switch (block) {
       case 'unit':
@@ -154,15 +154,15 @@ export class GameService {
         break;
       case 'school':
         this.manage.addSchool(instance as School);
-        this.persistData(block, this.manage.school);
+        this.persistData(block, this.manage.schools);
         break;
       case 'shopping':
         this.manage.addShopping(instance as Shopping);
         this.persistData(block, this.manage.shopping);
         break;
-      case 'stairs':
-        this.manage.addStairs(instance as Stairs);
-        this.persistData(block, this.manage.stairs);
+      case 'elevator':
+        this.manage.addElevator(instance as Elevator);
+        this.persistData(block, this.manage.elevator);
         break;
     }
   }
@@ -177,7 +177,7 @@ export class GameService {
       | Safety
       | Attractions
       | Unit
-      | Stairs
+      | Elevator
   ) {
     switch (block) {
       case 'flat':
@@ -194,7 +194,7 @@ export class GameService {
         break;
       case 'shopping':
         break;
-      case 'stairs':
+      case 'elevator':
         break;
     }
   }
@@ -209,7 +209,7 @@ export class GameService {
       | Safety[]
       | Attractions[]
       | Unit[]
-      | Stairs[]
+      | Elevator[]
   ) {
     // localStorage.setItem(key, JSON.stringify(data));
   }

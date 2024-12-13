@@ -1,6 +1,6 @@
 export type IBloxx =
   | 'unit'
-  | 'stairs'
+  | 'elevator'
   | 'flat'
   | 'office'
   | 'shopping'

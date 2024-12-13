@@ -8,7 +8,7 @@ import { Office } from './office';
 import { Safety } from './safety';
 import { School } from './school';
 import { Shopping } from './shopping';
-import { Stairs } from './stairs';
+import { Elevator } from './elevator';
 
 export class Unit {
   public readonly type = 'unit';
@@ -17,7 +17,7 @@ export class Unit {
   private reachable = false;
   public id = new Date().getTime();
   public tenant:
-    | Stairs
+    | Elevator
     | Office
     | Attractions
     | Flat

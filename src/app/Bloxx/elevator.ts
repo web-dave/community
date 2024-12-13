@@ -2,8 +2,8 @@ import { INode } from 'models/node.interface';
 import { BankService, prizes } from '../bank.service';
 import { GameService } from '../game.service';
 
-export class Stairs {
-  public readonly type = 'stairs';
+export class Elevator {
+  public readonly type = 'elevator';
   public price = prizes[this.type];
   public id = new Date().getTime();
 

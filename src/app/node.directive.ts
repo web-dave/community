@@ -1,20 +1,29 @@
-import { Directive, ElementRef, HostListener, Input } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  HostListener,
+  inject,
+  Input,
+} from '@angular/core';
 import { INode } from 'models/node.interface';
 import { GameService } from './game.service';
 import { Unit } from './Bloxx/unit';
 import { BankService } from './bank.service';
-import { Stairs } from './Bloxx/stairs';
+import { Elevator } from './Bloxx/elevator';
 import { Flat } from './Bloxx/flat';
 import { Office } from './Bloxx/office';
 import { Shopping } from './Bloxx/shopping';
 import { School } from './Bloxx/school';
 import { Safety } from './Bloxx/safety';
 import { Attractions } from './Bloxx/attractions';
+import { ManagementService } from './management.service';
 
 @Directive({ selector: '[stNode]' })
 export class NodeDirective {
   @Input() stNode!: INode;
   @Input() connected = false;
+
+  manage = inject(ManagementService);
 
   @HostListener('click')
   boom() {
@@ -35,9 +44,9 @@ export class NodeDirective {
         case 'pointer':
           console.log(this.stNode);
           break;
-        case 'stairs':
+        case 'elevator':
           if (this.stNode.unit && !this.stNode.unit?.tenant?.node) {
-            this.stNode.unit.tenant = new Stairs(
+            this.stNode.unit.tenant = new Elevator(
               this.stNode,
               this.elementRef.nativeElement as HTMLDivElement,
               this.engine,
@@ -121,6 +130,7 @@ export class NodeDirective {
               this.stNode.unit.dom.classList.contains('safety') ||
               this.stNode.unit.dom.classList.contains('attractions')
             ) {
+              console.log(this.manage);
               const classList = this.stNode.unit.dom.classList.value
                 .replace('node unit ', '')
                 .split(' ');
