@@ -3,12 +3,14 @@ import { IBloxx } from 'models/bloxx.interface';
 import { BankService } from './bank.service';
 import { GameService } from './game.service';
 import { tap } from 'rxjs/operators';
+import { NgClass, AsyncPipe } from '@angular/common';
+import { NodeDirective } from './node.directive';
 
 @Component({
     selector: 'st-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
-    standalone: false
+    imports: [NgClass, NodeDirective, AsyncPipe]
 })
 export class AppComponent {
   @ViewChild('dialog') dialog!: ElementRef<HTMLDialogElement>;

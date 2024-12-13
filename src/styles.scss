@@ -1,7 +1,7 @@
-@import "./styles/toolbar";
-@import "./styles/node";
-@import "./styles/gameboard";
-@import "./styles/floor";
+@use "./styles/toolbar";
+@use "./styles/node";
+@use "./styles/gameboard";
+@use "./styles/floor";
 
 @font-face {
   font-family: "pxlxxlBold";

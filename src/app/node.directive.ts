@@ -11,10 +11,7 @@ import { School } from './Bloxx/school';
 import { Safety } from './Bloxx/safety';
 import { Attractions } from './Bloxx/attractions';
 
-@Directive({
-    selector: '[stNode]',
-    standalone: false
-})
+@Directive({ selector: '[stNode]' })
 export class NodeDirective {
   @Input() stNode!: INode;
   @Input() connected = false;
