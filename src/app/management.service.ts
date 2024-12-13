@@ -17,13 +17,18 @@ export class ManagementService {
   offices: Office[] = [];
   flats: Flat[] = [];
   shopping: Shopping[] = [];
-  school: School[] = [];
+  schools: School[] = [];
   safety: Safety[] = [];
   attractions: Attractions[] = [];
   units: Unit[] = [];
   elevator: Elevator[] = [];
 
   constructor() {}
+
+  manage() {
+    this.findJob();
+    this.findSchool();
+  }
 
   findJob() {
     this.flats
@@ -38,10 +43,26 @@ export class ManagementService {
         }
       });
   }
+  findSchool() {
+    this.flats
+      .filter((flat) => flat.kids !== 0)
+      .filter((flat) => flat.kids > flat.schools.length)
+      .forEach((flat) => {
+        const freeSchools = this.schools.filter(
+          (school) => school.maxNumberOfKids > school.kids.length
+        );
+        if (freeSchools.length >= 1) {
+          const freeSchool =
+            freeSchools[Math.floor(Math.random() * freeSchools.length)];
+          freeSchool.getKid(flat);
+          flat.getASchool(freeSchool);
+        }
+      });
+  }
 
   addOffice(t: Office) {
     this.offices.push(t);
-    this.findJob();
+    this.manage();
   }
 
   destroyOffice(t: Office) {
@@ -51,12 +72,12 @@ export class ManagementService {
     if (t.node.unit?.tenant) {
       t.node.unit.tenant = undefined;
     }
-    this.findJob();
+    this.manage();
   }
 
   addFlat(t: Flat) {
     this.flats.push(t);
-    this.findJob();
+    this.manage();
   }
 
   destroyFlat(t: Flat) {
@@ -67,33 +88,32 @@ export class ManagementService {
     if (t.node.unit?.tenant) {
       t.node.unit.tenant = undefined;
     }
-    this.findJob();
+    this.manage();
   }
 
   addShopping(t: Shopping) {
     this.shopping.push(t);
-    this.findJob();
+    this.manage();
   }
 
   addSchool(t: School) {
-    this.school.push(t);
-    this.findJob();
+    this.schools.push(t);
+    this.manage();
   }
 
   addSafety(t: Safety) {
     this.safety.push(t);
-    this.findJob();
+    this.manage();
   }
 
   addAttractions(t: Attractions) {
     this.attractions.push(t);
-    this.findJob();
+    this.manage();
   }
 
   addUnit(t: Unit) {
     this.units.push(t);
-    this.findJob();
-    console.log(this);
+    this.manage();
   }
 
   addElevator(t: Elevator) {

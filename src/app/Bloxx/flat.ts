@@ -67,6 +67,9 @@ export class Flat {
     this.offices.push(office);
     this.jobs = this.adults - this.offices.length;
   }
+  getASchool(school: School) {
+    this.schools.push(school);
+  }
 
   destroy() {
     this.terminator$$.next(1);
@@ -86,5 +89,9 @@ export class Flat {
       office.leave(this);
     });
     this.offices = [];
+    this.schools.forEach((school) => {
+      school.leave(this);
+    });
+    this.schools = [];
   }
 }
