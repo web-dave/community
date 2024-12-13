@@ -12,7 +12,8 @@ import { Safety } from './Bloxx/safety';
 import { Attractions } from './Bloxx/attractions';
 
 @Directive({
-  selector: '[stNode]',
+    selector: '[stNode]',
+    standalone: false
 })
 export class NodeDirective {
   @Input() stNode!: INode;

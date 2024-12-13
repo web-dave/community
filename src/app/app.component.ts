@@ -5,9 +5,10 @@ import { GameService } from './game.service';
 import { tap } from 'rxjs/operators';
 
 @Component({
-  selector: 'st-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+    selector: 'st-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    standalone: false
 })
 export class AppComponent {
   @ViewChild('dialog') dialog!: ElementRef<HTMLDialogElement>;
