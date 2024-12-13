@@ -1,13 +1,13 @@
 import { INode } from 'models/node.interface';
-import { BankService } from '../bank.service';
+import { BankService, prizes } from '../bank.service';
 import { GameService } from '../game.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Flat } from './flat';
 
 export class Office {
-  public price = 50000;
   public readonly type = 'office';
+  public price = prizes[this.type];
   public id = new Date().getTime();
   private rent = 500;
   private salary = 2500;

@@ -1,6 +1,6 @@
 import { INode } from 'models/node.interface';
 import { takeWhile } from 'rxjs/operators';
-import { BankService } from '../bank.service';
+import { BankService, prizes } from '../bank.service';
 import { GameService } from '../game.service';
 import { Attractions } from './attractions';
 import { Flat } from './flat';
@@ -11,7 +11,9 @@ import { Shopping } from './shopping';
 import { Stairs } from './stairs';
 
 export class Unit {
-  public price = 5000;
+  public readonly type = 'unit';
+  public price = prizes[this.type];
+
   private reachable = false;
   public id = new Date().getTime();
   public tenant:
@@ -23,7 +25,6 @@ export class Unit {
     | School
     | Shopping
     | undefined;
-  public readonly type = 'unit';
   public name: string = '';
   constructor(
     public node: INode,

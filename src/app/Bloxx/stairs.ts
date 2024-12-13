@@ -1,12 +1,12 @@
 import { INode } from 'models/node.interface';
-import { BankService } from '../bank.service';
+import { BankService, prizes } from '../bank.service';
 import { GameService } from '../game.service';
 
 export class Stairs {
-  public price = 3000;
+  public readonly type = 'stairs';
+  public price = prizes[this.type];
   public id = new Date().getTime();
 
-  public readonly type = 'stairs';
   constructor(
     public node: INode,
     private dom: HTMLDivElement,

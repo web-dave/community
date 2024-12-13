@@ -1,6 +1,6 @@
 import { INode } from 'models/node.interface';
 import { first, takeUntil } from 'rxjs/operators';
-import { BankService } from '../bank.service';
+import { BankService, prizes } from '../bank.service';
 import { GameService } from '../game.service';
 import { takeEveryNth } from '../utils/operators';
 import { IPerson } from 'models/person.interface';
@@ -10,8 +10,8 @@ import { Office } from './office';
 import { School } from './school';
 
 export class Flat {
-  public price = 30000;
   public readonly type = 'flat';
+  public price = prizes[this.type];
   private rent = 500;
 
   public id = new Date().getTime();
