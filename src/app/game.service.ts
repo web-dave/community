@@ -24,6 +24,21 @@ export class GameService {
   unit_count = 25;
   activeBlock: IBloxx = 'unit';
   total_floors: IFloor[] = [];
+  units: {
+    [key: string]: {
+      id: number;
+      floor: number;
+      dom?: HTMLDivElement;
+      tenant?:
+        | Elevator
+        | Office
+        | Attractions
+        | Flat
+        | Safety
+        | School
+        | Shopping;
+    };
+  } = {};
   dialogData$ = new Subject<string[]>();
 
   tick$ = interval(2000).pipe(share());
@@ -34,13 +49,15 @@ export class GameService {
 
   constructor(public manage: ManagementService) {
     this.total_floors = [...Array(this.floors_count).keys()].map((i) => ({
-      id: i,
+      floor: i,
       elevator: false,
-      nodes: [...Array(this.unit_count).keys()].map((j) => ({
-        id: j,
-        floor: i,
-      })),
+      nodes: [...Array(this.unit_count).keys()].map((j) => {
+        this.units[i + '_' + j] = { id: j, floor: i };
+        return this.units[i + '_' + j];
+      }),
     }));
+    console.log(this.total_floors);
+    console.log(this.units);
     this.rentTick$.subscribe(() => {
       this.manage.manage();
     });
