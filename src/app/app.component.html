@@ -52,7 +52,7 @@
   <div class="wallet">{{ bank.bankAccount$ | async }}</div>
 </div>
 <dialog #dialog>
-  <div (click)="dialog.close()">X</div>
+  <button (click)="dialog.close()">X</button>
   <table>
     @for (data of dialogData$ | async; track data) {
     <tr>

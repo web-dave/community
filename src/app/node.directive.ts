@@ -130,7 +130,6 @@ export class NodeDirective {
               this.stNode.unit.dom.classList.contains('safety') ||
               this.stNode.unit.dom.classList.contains('attractions')
             ) {
-              console.log(this.manage);
               const classList = this.stNode.unit.dom.classList.value
                 .replace('node unit ', '')
                 .split(' ');
