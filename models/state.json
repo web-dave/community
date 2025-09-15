@@ -1,0 +1,34 @@
+{
+  "units": [
+    {
+      "id": "10_7",
+      "reachable": true,
+      "condition": "clean",
+      "adults": 2,
+      "kids": 1,
+      "type": "Flat",
+      "offices": ["10_9", "10_9"],
+      "schools": ["10_8"]
+    },
+    {
+      "id": "10_9",
+      "jobs": 3,
+      "employees": ["10_7", "10_7"],
+      "reachable": true,
+      "condition": "clean",
+      "type": "Office"
+    },
+    {
+      "seats": 12,
+      "kids": ["10_7"],
+      "id": "10_8",
+      "reachable": true,
+      "condition": "",
+      "type": "School"
+    }
+  ],
+  "offices": ["10_9"],
+  "schools": ["10_8"],
+  "flats": ["10_7"],
+  "accountValue": 20000
+}
