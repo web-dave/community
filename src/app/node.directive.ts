@@ -17,17 +17,25 @@ import { School } from './Bloxx/school';
 import { Safety } from './Bloxx/safety';
 import { Attractions } from './Bloxx/attractions';
 import { ManagementService } from './management.service';
+import { Store } from '@ngrx/store';
+import { buildUnitAction } from './redux/actions';
 
 @Directive({ selector: '[stNode]' })
 export class NodeDirective {
   @Input() stNode!: INode;
   @Input() connected = false;
 
+  store = inject(Store);
+
   manage = inject(ManagementService);
 
   @HostListener('click')
   boom() {
     if (this.bank.isAffordable(this.engine.activeBlock)) {
+      const id = this.stNode.floor + '_' + this.stNode.id;
+      this.store.dispatch(
+        buildUnitAction({ unitType: this.engine.activeBlock as any, id })
+      );
       switch (this.engine.activeBlock) {
         case 'unit':
           if (!this.stNode.unit) {

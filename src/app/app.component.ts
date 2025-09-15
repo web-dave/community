@@ -5,6 +5,8 @@ import { GameService } from './game.service';
 import { tap } from 'rxjs/operators';
 import { NgClass, AsyncPipe } from '@angular/common';
 import { NodeDirective } from './node.directive';
+import { Store } from '@ngrx/store';
+import { balanceSelector } from './redux/selectors';
 
 @Component({
   selector: 'st-root',
@@ -16,6 +18,9 @@ export class AppComponent {
   @ViewChild('dialog') dialog!: ElementRef<HTMLDialogElement>;
   engine = inject(GameService);
   bank = inject(BankService);
+
+  balance = inject(Store).selectSignal(balanceSelector);
+
   dayLight = 0;
   timeTable = [1, 2, 3, 4, 3, 2, 1];
   total_floors = this.engine.total_floors;

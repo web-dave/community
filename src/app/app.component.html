@@ -49,7 +49,8 @@
     (click)="updatePointer('pointer')"
   ></div>
   <div class="toolbar-divider"></div>
-  <div class="wallet">{{ bank.bankAccount$ | async }}</div>
+  <div class="wallet">{{ balance() }}</div>
+  <!-- <div class="wallet">{{ bank.bankAccount$ | async }}</div> -->
 </div>
 <dialog #dialog>
   <button (click)="dialog.close()">X</button>

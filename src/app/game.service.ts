@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { IBloxx } from 'models/bloxx.interface';
 import { IFloor } from 'models/floor.interface';
 import { interval, Subject } from 'rxjs';
@@ -13,6 +13,8 @@ import { Safety } from './Bloxx/safety';
 import { School } from './Bloxx/school';
 import { Shopping } from './Bloxx/shopping';
 import { Elevator } from './Bloxx/elevator';
+import { Store } from '@ngrx/store';
+import { rentAction } from './redux/actions';
 
 @Injectable({
   providedIn: 'root',
@@ -41,10 +43,12 @@ export class GameService {
   } = {};
   dialogData$ = new Subject<string[]>();
 
+  store = inject(Store);
+
   tick$ = interval(2000).pipe(share());
   rentTick$ = this.tick$.pipe(
-    takeEveryNth(7)
-    // tap((i) => console.log(i, this.manage))
+    takeEveryNth(7),
+    tap((i) => this.store.dispatch(rentAction()))
   );
 
   constructor(public manage: ManagementService) {
