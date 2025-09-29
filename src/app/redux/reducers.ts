@@ -10,7 +10,13 @@ import {
 } from '@ngrx/store';
 import { buildUnitAction, rentAction } from './actions';
 
-export type UnitType = 'unit' | 'flat' | 'office' | 'school' | 'shoping';
+export type UnitType =
+  | 'unit'
+  | 'flat'
+  | 'office'
+  | 'school'
+  | 'shopping'
+  | 'elevator';
 export type condition = 'clean' | 'dirty';
 
 export const prizes: { [key: string]: number } = {
@@ -47,6 +53,8 @@ export interface State {
   offices: string[];
   schools: string[];
   flats: string[];
+  shoppings: string[];
+  elevators: string[];
   units: IUnit[];
   accountValue: number;
 }
@@ -54,10 +62,14 @@ export interface State {
 export const initialState: State = {
   offices: [],
   schools: [],
+  shoppings: [],
+  elevators: [],
   flats: [],
   units: [],
   accountValue: 35000,
 };
+
+const groundFloor = 10;
 
 export const reducer = createReducer(
   initialState,
@@ -78,57 +90,137 @@ export const reducer = createReducer(
     let list: string[] = [];
     const newBalnance = state.accountValue - prizes[action.unitType];
     const newState: State = { ...state, accountValue: newBalnance };
+    const target = state.units.find((u) => u.id == action.id);
+
+    const ids = action.id.split('_');
+    const floor = parseInt(ids[0], 10);
+    const id = parseInt(ids[1], 10);
+    console.log(ids);
+
     switch (action.unitType) {
       case 'unit':
+        if (!!target) {
+          return state;
+        }
+        console.log(floor, groundFloor);
+        let reachable = floor == groundFloor;
+        if (floor != groundFloor) {
+          if (state.elevators.find((u) => u.startsWith(`${floor}_`))) {
+            reachable = true;
+          }
+        }
         const newUnit: IUnit = {
           id: action.id,
-          reachable: false,
+          reachable,
           condition: 'clean',
           type: action.unitType,
         };
+        console.log(newUnit);
         newState.units = [...state.units, newUnit];
         break;
       case 'flat':
-        newState.units = state.units.map((u) => {
-          if (u.id == action.id) {
-            return {
-              ...u,
-              adults: 2,
-              kids: 2,
-              offices: [],
-              schools: [],
-            };
-          }
-          return u;
-        });
-        newState.flats = [...state.flats, action.id];
+        if (!!target && target.type == 'unit') {
+          newState.units = state.units.map((u) => {
+            if (u.id == action.id) {
+              return {
+                ...u,
+                adults: 2,
+                kids: action.kids,
+                type: action.unitType,
+                offices: [],
+                schools: [],
+              };
+            }
+            return u;
+          });
+          newState.flats = [...state.flats, action.id];
+        } else return state;
+
         break;
       case 'office':
-        newState.units = state.units.map((u) => {
-          if (u.id == action.id) {
-            return {
-              ...u,
-              employees: [],
-              jobs: 5,
-            };
-          }
-          return u;
-        });
-        newState.offices = [...state.offices, action.id];
+        if (!!target && target.type == 'unit') {
+          newState.units = state.units.map((u) => {
+            if (u.id == action.id) {
+              return {
+                ...u,
+                type: action.unitType,
+                employees: [],
+                jobs: 5,
+              };
+            }
+            return u;
+          });
+          newState.offices = [...state.offices, action.id];
+        } else return state;
         break;
       case 'school':
-        newState.units = state.units.map((u) => {
-          if (u.id == action.id) {
-            return {
-              ...u,
-              pupils: [],
-              seats: 12,
-            };
-          }
-          return u;
-        });
+        if (!!target && target.type == 'unit') {
+          newState.units = state.units.map((u) => {
+            if (u.id == action.id) {
+              return {
+                ...u,
+                type: action.unitType,
+                pupils: [],
+                seats: 12,
+              };
+            }
+            return u;
+          });
 
-        newState.schools = [...state.schools, action.id];
+          newState.schools = [...state.schools, action.id];
+        } else return state;
+        break;
+      case 'shopping':
+        if (!!target && target.type == 'unit') {
+          newState.units = state.units.map((u) => {
+            if (u.id == action.id) {
+              return {
+                ...u,
+                type: action.unitType,
+              };
+            }
+            return u;
+          });
+
+          newState.shoppings = [...state.shoppings, action.id];
+        } else return state;
+        break;
+      case 'elevator':
+        let isConnectable = false;
+        if (floor == groundFloor) {
+          isConnectable = true;
+        }
+        if (floor <= groundFloor - 1) {
+          if (state.elevators.includes(`${floor + 1}_${id}`)) {
+            isConnectable = true;
+          }
+        }
+        if (floor >= groundFloor + 1) {
+          if (state.elevators.includes(`${floor - 1}_${id}`)) {
+            isConnectable = true;
+          }
+        }
+        if (!!target && target.type == 'unit' && isConnectable) {
+          newState.units = state.units
+            .map((u) => {
+              if (u.id == action.id) {
+                return {
+                  ...u,
+                  type: action.unitType,
+                  reachable: true,
+                };
+              }
+              return u;
+            })
+            .map((u) => {
+              if (u.id.startsWith(`${floor}_`)) {
+                return { ...u, reachable: true };
+              }
+              return u;
+            });
+
+          newState.elevators = [...state.elevators, action.id];
+        } else return state;
         break;
     }
 

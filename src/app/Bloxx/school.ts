@@ -15,7 +15,7 @@ export class School {
     private engine: GameService,
     private bank: BankService
   ) {
-    this.dom.classList.add(this.type);
+    // this.dom.classList.add(this.type);
     this.bank.subtract(this.price);
     this.engine.add('school', this);
   }

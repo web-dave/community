@@ -75,7 +75,7 @@
       <div class="node-container">
         @for (node of floor.nodes; track node) {
         <div
-          class="node"
+          [class]="'node ' + selectTypeClass(floor.floor + '_' + node.id)()"
           [stNode]="node"
           [connected]="floor.elevator"
           [id]="'node_' + floor.floor + '_' + node.id"

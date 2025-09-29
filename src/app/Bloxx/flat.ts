@@ -32,7 +32,7 @@ export class Flat {
     private engine: GameService,
     private bank: BankService
   ) {
-    this.dom.classList.add(this.type);
+    // this.dom.classList.add(this.type);
 
     this.bank.subtract(this.price);
 
@@ -52,12 +52,12 @@ export class Flat {
 
     this.engine.rentTick$.pipe(takeEveryNth(7), first()).subscribe(() => {
       this.kids = Math.floor(Math.random() * 4);
-      this.dom.classList.add('kids-' + this.kids);
-      if (this.kids === 0) {
-        this.dom.classList.add('couple');
-      } else {
-        this.dom.classList.add('family');
-      }
+      // this.dom.classList.add('kids-' + this.kids);
+      // if (this.kids === 0) {
+      //   this.dom.classList.add('couple');
+      // } else {
+      //   this.dom.classList.add('family');
+      // }
     });
 
     this.engine.add('flat', this);

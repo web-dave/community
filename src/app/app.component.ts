@@ -6,7 +6,7 @@ import { tap } from 'rxjs/operators';
 import { NgClass, AsyncPipe } from '@angular/common';
 import { NodeDirective } from './node.directive';
 import { Store } from '@ngrx/store';
-import { balanceSelector } from './redux/selectors';
+import { balanceSelector, typeClassSelector } from './redux/selectors';
 
 @Component({
   selector: 'st-root',
@@ -18,8 +18,9 @@ export class AppComponent {
   @ViewChild('dialog') dialog!: ElementRef<HTMLDialogElement>;
   engine = inject(GameService);
   bank = inject(BankService);
+  store = inject(Store);
 
-  balance = inject(Store).selectSignal(balanceSelector);
+  balance = this.store.selectSignal(balanceSelector);
 
   dayLight = 0;
   timeTable = [1, 2, 3, 4, 3, 2, 1];
@@ -43,5 +44,9 @@ export class AppComponent {
 
   updatePointer(icon: IBloxx) {
     this.engine.activeBlock = icon;
+  }
+
+  selectTypeClass(id: string) {
+    return this.store.selectSignal(typeClassSelector(id));
   }
 }

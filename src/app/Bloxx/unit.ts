@@ -34,7 +34,7 @@ export class Unit {
   ) {
     this.name = this.type + '-' + this.node.floor + '-' + this.node.id;
     this.bank.subtract(this.price);
-    this.dom.classList.add(this.type);
+    // this.dom.classList.add(this.type);
 
     this.engine.tick$
       .pipe(takeWhile((val) => !this.reachable))

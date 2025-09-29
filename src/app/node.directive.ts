@@ -34,98 +34,102 @@ export class NodeDirective {
     if (this.bank.isAffordable(this.engine.activeBlock)) {
       const id = this.stNode.floor + '_' + this.stNode.id;
       this.store.dispatch(
-        buildUnitAction({ unitType: this.engine.activeBlock as any, id })
+        buildUnitAction({
+          unitType: this.engine.activeBlock as any,
+          id,
+          kids: Math.floor(Math.random() * 4),
+        })
       );
-      switch (this.engine.activeBlock) {
-        case 'unit':
-          if (!this.stNode.unit) {
-            if (this.engine.isAbleToStart(this.stNode.floor, this.stNode.id)) {
-              this.stNode.unit = new Unit(
-                this.stNode,
-                this.elementRef.nativeElement as HTMLDivElement,
-                this.bank,
-                this.engine
-              );
-            }
-          }
-          break;
-        case 'pointer':
-          console.log(this.stNode);
-          break;
-        case 'elevator':
-          if (this.stNode.unit && !this.stNode.unit?.tenant?.node) {
-            this.stNode.unit.tenant = new Elevator(
-              this.stNode,
-              this.elementRef.nativeElement as HTMLDivElement,
-              this.engine,
-              this.bank
-            );
-          }
-          break;
-        case 'flat':
-          if (this.stNode.unit && !this.stNode.unit?.tenant?.node) {
-            this.stNode.unit.tenant = new Flat(
-              this.stNode,
-              this.elementRef.nativeElement as HTMLDivElement,
-              this.engine,
-              this.bank
-            );
-          }
-          break;
-        case 'office':
-          if (this.stNode.unit && !this.stNode.unit?.tenant?.node) {
-            this.stNode.unit.tenant = new Office(
-              this.stNode,
-              this.elementRef.nativeElement as HTMLDivElement,
-              this.engine,
-              this.bank
-            );
-          }
-          break;
-        case 'shopping':
-          if (this.stNode.unit && !this.stNode.unit?.tenant?.node) {
-            this.stNode.unit.tenant = new Shopping(
-              this.stNode,
-              this.elementRef.nativeElement as HTMLDivElement,
-              this.engine,
-              this.bank
-            );
-          }
-          break;
-        case 'school':
-          if (this.stNode.unit && !this.stNode.unit?.tenant?.node) {
-            this.stNode.unit.tenant = new School(
-              this.stNode,
-              this.elementRef.nativeElement as HTMLDivElement,
-              this.engine,
-              this.bank
-            );
-          }
-          break;
-        case 'attractions':
-          if (this.stNode.unit && !this.stNode.unit?.tenant?.node) {
-            this.stNode.unit.tenant = new Attractions(
-              this.stNode,
-              this.elementRef.nativeElement as HTMLDivElement,
-              this.engine,
-              this.bank
-            );
-          }
-          break;
-        case 'safety':
-          if (this.stNode.unit && !this.stNode.unit?.tenant?.node) {
-            this.stNode.unit.tenant = new Safety(
-              this.stNode,
-              this.elementRef.nativeElement as HTMLDivElement,
-              this.engine,
-              this.bank
-            );
-          }
-          break;
-        default:
-          console.error('Unknown Block', this.engine.activeBlock, this.stNode);
-          break;
-      }
+      // switch (this.engine.activeBlock) {
+      //   case 'unit':
+      //     if (!this.stNode.unit) {
+      //       if (this.engine.isAbleToStart(this.stNode.floor, this.stNode.id)) {
+      //         this.stNode.unit = new Unit(
+      //           this.stNode,
+      //           this.elementRef.nativeElement as HTMLDivElement,
+      //           this.bank,
+      //           this.engine
+      //         );
+      //       }
+      //     }
+      //     break;
+      //   case 'pointer':
+      //     console.log(this.stNode);
+      //     break;
+      //   case 'elevator':
+      //     if (this.stNode.unit && !this.stNode.unit?.tenant?.node) {
+      //       this.stNode.unit.tenant = new Elevator(
+      //         this.stNode,
+      //         this.elementRef.nativeElement as HTMLDivElement,
+      //         this.engine,
+      //         this.bank
+      //       );
+      //     }
+      //     break;
+      //   case 'flat':
+      //     if (this.stNode.unit && !this.stNode.unit?.tenant?.node) {
+      //       this.stNode.unit.tenant = new Flat(
+      //         this.stNode,
+      //         this.elementRef.nativeElement as HTMLDivElement,
+      //         this.engine,
+      //         this.bank
+      //       );
+      //     }
+      //     break;
+      //   case 'office':
+      //     if (this.stNode.unit && !this.stNode.unit?.tenant?.node) {
+      //       this.stNode.unit.tenant = new Office(
+      //         this.stNode,
+      //         this.elementRef.nativeElement as HTMLDivElement,
+      //         this.engine,
+      //         this.bank
+      //       );
+      //     }
+      //     break;
+      //   case 'shopping':
+      //     if (this.stNode.unit && !this.stNode.unit?.tenant?.node) {
+      //       this.stNode.unit.tenant = new Shopping(
+      //         this.stNode,
+      //         this.elementRef.nativeElement as HTMLDivElement,
+      //         this.engine,
+      //         this.bank
+      //       );
+      //     }
+      //     break;
+      //   case 'school':
+      //     if (this.stNode.unit && !this.stNode.unit?.tenant?.node) {
+      //       this.stNode.unit.tenant = new School(
+      //         this.stNode,
+      //         this.elementRef.nativeElement as HTMLDivElement,
+      //         this.engine,
+      //         this.bank
+      //       );
+      //     }
+      //     break;
+      //   case 'attractions':
+      //     if (this.stNode.unit && !this.stNode.unit?.tenant?.node) {
+      //       this.stNode.unit.tenant = new Attractions(
+      //         this.stNode,
+      //         this.elementRef.nativeElement as HTMLDivElement,
+      //         this.engine,
+      //         this.bank
+      //       );
+      //     }
+      //     break;
+      //   case 'safety':
+      //     if (this.stNode.unit && !this.stNode.unit?.tenant?.node) {
+      //       this.stNode.unit.tenant = new Safety(
+      //         this.stNode,
+      //         this.elementRef.nativeElement as HTMLDivElement,
+      //         this.engine,
+      //         this.bank
+      //       );
+      //     }
+      //     break;
+      //   default:
+      //     console.error('Unknown Block', this.engine.activeBlock, this.stNode);
+      //     break;
+      // }
     } else {
       switch (this.engine.activeBlock) {
         case 'pointer':

@@ -6,6 +6,7 @@ export const buildUnitAction = createAction(
   props<{
     unitType: UnitType;
     id: string;
+    kids: number;
   }>()
 );
 export const rentAction = createAction('pay Rent');
