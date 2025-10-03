@@ -244,6 +244,10 @@ export const reducer = createReducer(
         let isConnectable = false;
         if (checkFloor === 0 || state.elevators.includes(`${floor + checkFloor}_${id}`)) {
           isConnectable = true;
+        } else {
+          const accessibleIds = getIdListOfAccessibleUnits(state, floor, id);
+          const elevatorIds = state.elevators.filter((u) => u.startsWith(`${floor}_`));
+          isConnectable = elevatorIds.some((u) => accessibleIds.includes(u));
         }
         if (!!target && target.type == 'unit' && isConnectable) {
           const accessibleIds = getIdListOfAccessibleUnits(state, floor, id);
