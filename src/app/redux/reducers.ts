@@ -95,6 +95,7 @@ export const reducer = createReducer(
     const ids = action.id.split('_');
     const floor = parseInt(ids[0], 10);
     const id = parseInt(ids[1], 10);
+    const checkFloor = floor > groundFloor ? -1 : floor < groundFloor ? 1 : 0;
     console.log(ids);
 
     switch (action.unitType) {
@@ -187,18 +188,8 @@ export const reducer = createReducer(
         break;
       case 'elevator':
         let isConnectable = false;
-        if (floor == groundFloor) {
+        if (checkFloor === 0 || state.elevators.includes(`${floor + checkFloor}_${id}`)) {
           isConnectable = true;
-        }
-        if (floor <= groundFloor - 1) {
-          if (state.elevators.includes(`${floor + 1}_${id}`)) {
-            isConnectable = true;
-          }
-        }
-        if (floor >= groundFloor + 1) {
-          if (state.elevators.includes(`${floor - 1}_${id}`)) {
-            isConnectable = true;
-          }
         }
         if (!!target && target.type == 'unit' && isConnectable) {
           newState.units = state.units
