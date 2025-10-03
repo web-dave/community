@@ -70,6 +70,42 @@ export const initialState: State = {
 };
 
 const groundFloor = 10;
+const unitCount = 25;
+const floorCount = 16;
+
+function getIdListOfAccessibleUnits(state: State, floor: number, node: number): string[] {
+  const units = state.units.filter((u) => u.id.startsWith(`${floor}_`)).map((u) => u.id);
+  const accessibleIds = [];
+  for (let i = node - 1; i >= 0; --i) {
+    if (units.includes(`${floor}_${i}`)) {
+      accessibleIds.push(`${floor}_${i}`);
+    } else
+      break;
+  }
+  for (let i = node + 1; i < unitCount; ++i) {
+    if (units.includes(`${floor}_${i}`)) {
+      accessibleIds.push(`${floor}_${i}`);
+    } else
+      break;
+  }
+  return accessibleIds;
+}
+
+function searchChangeReachableUnits(accessibleIds: string[], floor: number, id: number, state: State, direction: number): string[] {
+  const changeReachableUnits: string[] = [];
+  if (accessibleIds.includes(`${floor}_${id + direction}`)) {
+    const lu = state.units.find((u) => u.id === `${floor}_${id + direction}`);
+    if (lu && !lu.reachable) {
+      for (let i = id + direction; i >= 0 && i < unitCount; i += direction) {
+        if (accessibleIds.includes(`${floor}_${i}`)) {
+          changeReachableUnits.push(`${floor}_${i}`);
+        } else
+          break;
+      }
+    }
+  }
+  return changeReachableUnits;
+}
 
 export const reducer = createReducer(
   initialState,
@@ -105,11 +141,19 @@ export const reducer = createReducer(
         }
         console.log(floor, groundFloor);
         let reachable = floor == groundFloor;
+        let changeReachableUnits: string[] = [];
         if (floor != groundFloor) {
           if (!state.units.find((u) => u.id === `${floor + checkFloor}_${id}`))
             return state;
           if (state.elevators.find((u) => u.startsWith(`${floor}_`))) {
-            reachable = true;
+            const accessibleIds = getIdListOfAccessibleUnits(state, floor, id);
+            const elevatorIds = state.elevators.filter((u) => u.startsWith(`${floor}_`));
+            const elevatorReachable = elevatorIds.some((u) => accessibleIds.includes(u));
+            if (elevatorReachable) {
+              reachable = true;
+              changeReachableUnits = searchChangeReachableUnits(accessibleIds, floor, id, state, -1);
+              changeReachableUnits = [...changeReachableUnits, ...searchChangeReachableUnits(accessibleIds, floor, id, state, 1)];
+            }
           }
         }
         const newUnit: IUnit = {
@@ -120,6 +164,14 @@ export const reducer = createReducer(
         };
         console.log(newUnit);
         newState.units = [...state.units, newUnit];
+        if (changeReachableUnits.length > 0) {
+          newState.units = newState.units.map((u) => {
+            if (changeReachableUnits.includes(u.id)) {
+              return { ...u, reachable: true };
+            }
+            return u;
+          });
+        }
         break;
       case 'flat':
         if (!!target && target.type == 'unit') {
@@ -194,6 +246,7 @@ export const reducer = createReducer(
           isConnectable = true;
         }
         if (!!target && target.type == 'unit' && isConnectable) {
+          const accessibleIds = getIdListOfAccessibleUnits(state, floor, id);
           newState.units = state.units
             .map((u) => {
               if (u.id == action.id) {
@@ -206,7 +259,7 @@ export const reducer = createReducer(
               return u;
             })
             .map((u) => {
-              if (u.id.startsWith(`${floor}_`)) {
+              if (u.id.startsWith(`${floor}_`) && accessibleIds.includes(u.id)) {
                 return { ...u, reachable: true };
               }
               return u;
