@@ -74,11 +74,11 @@ const groundFloor = 10;
 export const reducer = createReducer(
   initialState,
   on(rentAction, (state, action) => {
-    const newBalnance = state.flats.reduce(
+    const newBalance = state.flats.reduce(
       (balance, flat) => balance - 50,
       state.accountValue
     );
-    return { ...state, accountValue: newBalnance };
+    return { ...state, accountValue: newBalance };
   }),
   on(buildUnitAction, (state, action) => {
     if (!prizes[action.unitType]) {
@@ -88,8 +88,8 @@ export const reducer = createReducer(
       return state;
     }
     let list: string[] = [];
-    const newBalnance = state.accountValue - prizes[action.unitType];
-    const newState: State = { ...state, accountValue: newBalnance };
+    const newBalance = state.accountValue - prizes[action.unitType];
+    const newState: State = { ...state, accountValue: newBalance };
     const target = state.units.find((u) => u.id == action.id);
 
     const ids = action.id.split('_');
