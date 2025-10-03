@@ -106,6 +106,8 @@ export const reducer = createReducer(
         console.log(floor, groundFloor);
         let reachable = floor == groundFloor;
         if (floor != groundFloor) {
+          if (!state.units.find((u) => u.id === `${floor + checkFloor}_${id}`))
+            return state;
           if (state.elevators.find((u) => u.startsWith(`${floor}_`))) {
             reachable = true;
           }
