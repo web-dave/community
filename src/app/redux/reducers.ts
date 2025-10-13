@@ -8,7 +8,7 @@ import {
   MetaReducer,
   on,
 } from '@ngrx/store';
-import { buildUnitAction, rentAction } from './actions';
+import { buildUnitAction, timeAction } from './actions';
 
 export type UnitType =
   | 'unit'
@@ -34,6 +34,11 @@ export interface appState {
   state: State;
 }
 
+export enum MOOD {
+  notHappy = 'notHappy',
+  happy = 'happy',
+}
+
 export interface IUnit {
   id: string;
   reachable: boolean;
@@ -47,6 +52,7 @@ export interface IUnit {
   employees?: string[];
   pupils?: string[];
   seats?: number;
+  mood: MOOD;
 }
 
 export interface State {
@@ -73,25 +79,35 @@ const groundFloor = 10;
 const unitCount = 25;
 const floorCount = 16;
 
-function getIdListOfAccessibleUnits(state: State, floor: number, node: number): string[] {
-  const units = state.units.filter((u) => u.id.startsWith(`${floor}_`)).map((u) => u.id);
+function getIdListOfAccessibleUnits(
+  state: State,
+  floor: number,
+  node: number
+): string[] {
+  const units = state.units
+    .filter((u) => u.id.startsWith(`${floor}_`))
+    .map((u) => u.id);
   const accessibleIds = [];
   for (let i = node - 1; i >= 0; --i) {
     if (units.includes(`${floor}_${i}`)) {
       accessibleIds.push(`${floor}_${i}`);
-    } else
-      break;
+    } else break;
   }
   for (let i = node + 1; i < unitCount; ++i) {
     if (units.includes(`${floor}_${i}`)) {
       accessibleIds.push(`${floor}_${i}`);
-    } else
-      break;
+    } else break;
   }
   return accessibleIds;
 }
 
-function searchChangeReachableUnits(accessibleIds: string[], floor: number, id: number, state: State, direction: number): string[] {
+function searchChangeReachableUnits(
+  accessibleIds: string[],
+  floor: number,
+  id: number,
+  state: State,
+  direction: number
+): string[] {
   const changeReachableUnits: string[] = [];
   if (accessibleIds.includes(`${floor}_${id + direction}`)) {
     const lu = state.units.find((u) => u.id === `${floor}_${id + direction}`);
@@ -99,8 +115,7 @@ function searchChangeReachableUnits(accessibleIds: string[], floor: number, id: 
       for (let i = id + direction; i >= 0 && i < unitCount; i += direction) {
         if (accessibleIds.includes(`${floor}_${i}`)) {
           changeReachableUnits.push(`${floor}_${i}`);
-        } else
-          break;
+        } else break;
       }
     }
   }
@@ -109,12 +124,81 @@ function searchChangeReachableUnits(accessibleIds: string[], floor: number, id: 
 
 export const reducer = createReducer(
   initialState,
-  on(rentAction, (state, action) => {
+  on(timeAction, (state, action) => {
     const newBalance = state.flats.reduce(
       (balance, flat) => balance - 50,
       state.accountValue
     );
-    return { ...state, accountValue: newBalance };
+    let offices = state.units.filter((u) => u.type == 'office');
+    const flatUnits = state.units.map((u) => {
+      if (u.type == 'flat') {
+        const flat = { ...u };
+
+        // find Job
+        const jobAdults = flat.adults ?? 0;
+        const jobs = flat.offices?.length ?? 0;
+        const jobStop = jobAdults - jobs;
+        for (let i = 0; i < jobStop; i++) {
+          const office = state.units
+            .filter((u) => u.type == 'office')
+            .find((o) => (o.jobs as number) > (o.employees?.length as number));
+          if (!!office) {
+            flat.offices = [...(flat.offices as string[]), office.id as string];
+          }
+        }
+
+        // find school
+        const schoolKids = flat.kids ?? 0;
+        const flatSchool = flat.schools?.length ?? 0;
+        const schoolStop = schoolKids - flatSchool;
+        for (let i = 0; i < schoolStop; i++) {
+          const school = state.units
+            .filter((u) => u.type == 'school')
+            .find((o) => (o.seats as number) > (o.pupils?.length as number));
+          if (!!school) {
+            flat.schools = [...(flat.schools as string[]), school.id as string];
+          }
+        }
+
+        const kids = flat.kids ?? 0;
+        const school = flat.schools?.length ?? 0;
+        console.log(flat);
+        if (kids > school) {
+          flat.mood = MOOD.notHappy;
+        } else {
+          flat.mood = MOOD.happy;
+        }
+        return flat;
+      } else {
+        return u;
+      }
+    });
+    const units = flatUnits.map((unit) => {
+      if (unit.type == 'office') {
+        const employees = flatUnits
+          .filter((u) => u.type == 'flat')
+          .filter((u) => u.offices?.includes(unit.id))
+          .map((u) =>
+            (u.offices as string[]).filter((o) => o == unit.id).map(() => u.id)
+          )
+          .flat();
+        console.log('Flats ID:', employees);
+        const office = { ...unit, employees };
+        return office;
+      } else if (unit.type == 'school') {
+        const pupils = flatUnits
+          .filter((u) => u.type == 'flat')
+          .filter((u) => u.schools?.includes(unit.id))
+          .map((u) =>
+            (u.schools as string[]).filter((o) => o == unit.id).map(() => u.id)
+          )
+          .flat();
+        const school = { ...unit, pupils };
+        return school;
+      } else return unit;
+    });
+
+    return { ...state, units, accountValue: newBalance };
   }),
   on(buildUnitAction, (state, action) => {
     if (!prizes[action.unitType]) {
@@ -147,12 +231,31 @@ export const reducer = createReducer(
             return state;
           if (state.elevators.find((u) => u.startsWith(`${floor}_`))) {
             const accessibleIds = getIdListOfAccessibleUnits(state, floor, id);
-            const elevatorIds = state.elevators.filter((u) => u.startsWith(`${floor}_`));
-            const elevatorReachable = elevatorIds.some((u) => accessibleIds.includes(u));
+            const elevatorIds = state.elevators.filter((u) =>
+              u.startsWith(`${floor}_`)
+            );
+            const elevatorReachable = elevatorIds.some((u) =>
+              accessibleIds.includes(u)
+            );
             if (elevatorReachable) {
               reachable = true;
-              changeReachableUnits = searchChangeReachableUnits(accessibleIds, floor, id, state, -1);
-              changeReachableUnits = [...changeReachableUnits, ...searchChangeReachableUnits(accessibleIds, floor, id, state, 1)];
+              changeReachableUnits = searchChangeReachableUnits(
+                accessibleIds,
+                floor,
+                id,
+                state,
+                -1
+              );
+              changeReachableUnits = [
+                ...changeReachableUnits,
+                ...searchChangeReachableUnits(
+                  accessibleIds,
+                  floor,
+                  id,
+                  state,
+                  1
+                ),
+              ];
             }
           }
         }
@@ -161,6 +264,7 @@ export const reducer = createReducer(
           reachable,
           condition: 'clean',
           type: action.unitType,
+          mood: MOOD.happy,
         };
         console.log(newUnit);
         newState.units = [...state.units, newUnit];
@@ -242,11 +346,16 @@ export const reducer = createReducer(
         break;
       case 'elevator':
         let isConnectable = false;
-        if (checkFloor === 0 || state.elevators.includes(`${floor + checkFloor}_${id}`)) {
+        if (
+          checkFloor === 0 ||
+          state.elevators.includes(`${floor + checkFloor}_${id}`)
+        ) {
           isConnectable = true;
         } else {
           const accessibleIds = getIdListOfAccessibleUnits(state, floor, id);
-          const elevatorIds = state.elevators.filter((u) => u.startsWith(`${floor}_`));
+          const elevatorIds = state.elevators.filter((u) =>
+            u.startsWith(`${floor}_`)
+          );
           isConnectable = elevatorIds.some((u) => accessibleIds.includes(u));
         }
         if (!!target && target.type == 'unit' && isConnectable) {
@@ -263,7 +372,10 @@ export const reducer = createReducer(
               return u;
             })
             .map((u) => {
-              if (u.id.startsWith(`${floor}_`) && accessibleIds.includes(u.id)) {
+              if (
+                u.id.startsWith(`${floor}_`) &&
+                accessibleIds.includes(u.id)
+              ) {
                 return { ...u, reachable: true };
               }
               return u;

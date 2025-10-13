@@ -32,7 +32,7 @@ export class NodeDirective {
   @HostListener('click')
   boom() {
     if (this.bank.isAffordable(this.engine.activeBlock)) {
-      const id = this.stNode.floor + '_' + this.stNode.id;
+      const id = `${this.stNode.floor}_${this.stNode.id}`;
       this.store.dispatch(
         buildUnitAction({
           unitType: this.engine.activeBlock as any,

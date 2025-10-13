@@ -9,4 +9,4 @@ export const buildUnitAction = createAction(
     kids: number;
   }>()
 );
-export const rentAction = createAction('pay Rent');
+export const timeAction = createAction('One Month');

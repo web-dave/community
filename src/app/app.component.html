@@ -66,19 +66,19 @@
   <div class="gameboard">
     @for (floor of total_floors; track floor) {
     <div
-      [id]="'floor_' + floor.floor"
+      [id]="`floor_${floor.floor}`"
       class="floor"
       [class]="
-        floor.floor > 10 ? 'underground-bg ubg-' + floor.floor : 'sky-bg'
+        floor.floor > 10 ? `underground-bg ubg-${floor.floor}` : 'sky-bg'
       "
     >
       <div class="node-container">
         @for (node of floor.nodes; track node) {
         <div
-          [class]="'node ' + selectTypeClass(floor.floor + '_' + node.id)()"
+          [class]="'node ' + selectTypeClass(`${floor.floor}_${node.id}`)()"
           [stNode]="node"
           [connected]="floor.elevator"
-          [id]="'node_' + floor.floor + '_' + node.id"
+          [id]="`node_${floor.floor}_${node.id}`"
         ></div>
         }
       </div>

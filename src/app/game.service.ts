@@ -14,7 +14,7 @@ import { School } from './Bloxx/school';
 import { Shopping } from './Bloxx/shopping';
 import { Elevator } from './Bloxx/elevator';
 import { Store } from '@ngrx/store';
-import { rentAction } from './redux/actions';
+import { timeAction } from './redux/actions';
 
 @Injectable({
   providedIn: 'root',
@@ -48,7 +48,7 @@ export class GameService {
   tick$ = interval(2000).pipe(share());
   rentTick$ = this.tick$.pipe(
     takeEveryNth(7),
-    tap((i) => this.store.dispatch(rentAction()))
+    tap((i) => this.store.dispatch(timeAction()))
   );
 
   constructor(public manage: ManagementService) {
@@ -56,8 +56,8 @@ export class GameService {
       floor: i,
       elevator: false,
       nodes: [...Array(this.unit_count).keys()].map((j) => {
-        this.units[i + '_' + j] = { id: j, floor: i };
-        return this.units[i + '_' + j];
+        this.units[`${i}_${j}`] = { id: j, floor: i };
+        return this.units[`${i}_${j}`];
       }),
     }));
     console.log(this.total_floors);

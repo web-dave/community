@@ -11,7 +11,7 @@ export const typeClassSelector = (id: string) =>
   createSelector(stateSelector, (state: State) => {
     const unit = state.units.find((u) => u.id == id);
     if (!!unit) {
-      const classlist: string[] = ['unit', unit.type];
+      const classlist: string[] = ['unit', unit.type, unit.mood];
       if (!unit.reachable) {
         classlist.push('no-connection');
       }
