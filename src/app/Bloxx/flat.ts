@@ -122,6 +122,10 @@ export class Flat {
     }
   }
 
+  catchFire() {
+    this.dom.classList.add('on-fire');
+  }
+
   destroy() {
     this.terminator$$.next(1);
     this.terminator$$.complete();
@@ -129,6 +133,7 @@ export class Flat {
       'flat',
       'couple',
       'no-school',
+      'on-fire',
       'crime',
       'protected',
       'family',
