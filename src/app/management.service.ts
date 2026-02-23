@@ -28,6 +28,7 @@ export class ManagementService {
   manage() {
     this.findJob();
     this.findSchool();
+    this.findSafety();
   }
 
   findJob() {
@@ -56,6 +57,20 @@ export class ManagementService {
             freeSchools[Math.floor(Math.random() * freeSchools.length)];
           freeSchool.getKid(flat);
           flat.getASchool(freeSchool);
+        }
+      });
+  }
+
+  findSafety() {
+    this.flats
+      .filter((flat) => flat.safeties.length === 0)
+      .forEach((flat) => {
+        const people = flat.adults + flat.kids;
+        const availableSafety = this.safety.find(
+          (s) => s.peopleCount + people <= s.maxCapacity
+        );
+        if (availableSafety) {
+          availableSafety.protect(flat);
         }
       });
   }
