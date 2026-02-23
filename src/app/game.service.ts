@@ -49,6 +49,7 @@ export class GameService {
     takeEveryNth(7)
     // tap((i) => console.log(i, this.manage))
   );
+  fireTick$ = this.tick$.pipe(takeEveryNth(12));
 
   constructor(
     public manage: ManagementService,
@@ -67,6 +68,16 @@ export class GameService {
     console.log(this.units);
     this.rentTick$.subscribe(() => {
       this.manage.manage();
+    });
+    this.fireTick$.subscribe(() => {
+      const unprotected = this.manage.flats.filter(
+        (flat) => flat.safeties.length === 0
+      );
+      if (unprotected.length > 0) {
+        const target =
+          unprotected[Math.floor(Math.random() * unprotected.length)];
+        this.destroy('flat', target);
+      }
     });
   }
 
