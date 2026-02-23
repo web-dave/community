@@ -8,6 +8,7 @@ import { Person } from '../utils/person';
 import { Subject } from 'rxjs';
 import { Office } from './office';
 import { School } from './school';
+import { Safety } from './safety';
 
 export class Flat {
   public readonly type = 'flat';
@@ -22,6 +23,7 @@ export class Flat {
   kids = 0;
   jobs = 0;
   schools: School[] = [];
+  safeties: Safety[] = [];
   attractions = 0;
   noSchoolCounter = 0;
   offices: Office[] = [];
@@ -70,6 +72,19 @@ export class Flat {
   getASchool(school: School) {
     this.schools.push(school);
   }
+  getASafety(safety: Safety) {
+    this.safeties.push(safety);
+    this.dom.classList.add('protected');
+  }
+  leaveSafety(safety: Safety) {
+    const index = this.safeties.map((s) => s.id).indexOf(safety.id);
+    if (index !== -1) {
+      this.safeties.splice(index, 1);
+    }
+    if (this.safeties.length === 0) {
+      this.dom.classList.remove('protected');
+    }
+  }
 
   destroy() {
     this.terminator$$.next(1);
@@ -78,6 +93,7 @@ export class Flat {
       'flat',
       'couple',
       'no-school',
+      'protected',
       'family',
       'kids-0',
       'kids-1',
@@ -93,5 +109,9 @@ export class Flat {
       school.leave(this);
     });
     this.schools = [];
+    this.safeties.forEach((safety) => {
+      safety.leave(this);
+    });
+    this.safeties = [];
   }
 }
