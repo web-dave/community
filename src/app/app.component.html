@@ -47,6 +47,11 @@
     [ngClass]="{ active: engine.activeBlock === 'attractions' }"
     (click)="updatePointer('attractions')"
   ></div>
+  <div
+    class="toolbar-icon fun"
+    [ngClass]="{ active: engine.activeBlock === 'fun' }"
+    (click)="updatePointer('fun')"
+  ></div>
   <div class="toolbar-divider"></div>
   <div
     class="toolbar-icon pointer"

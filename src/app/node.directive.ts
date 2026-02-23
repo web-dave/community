@@ -17,6 +17,7 @@ import { School } from './Bloxx/school';
 import { Safety } from './Bloxx/safety';
 import { Attractions } from './Bloxx/attractions';
 import { ManagementService } from './management.service';
+import { Fun } from './Bloxx/fun';
 
 @Directive({ selector: '[stNode]' })
 export class NodeDirective {
@@ -104,6 +105,16 @@ export class NodeDirective {
             );
           }
           break;
+        case 'fun':
+          if (this.stNode.unit && !this.stNode.unit?.tenant?.node) {
+            this.stNode.unit.tenant = new Fun(
+              this.stNode,
+              this.elementRef.nativeElement as HTMLDivElement,
+              this.engine,
+              this.bank
+            );
+          }
+          break;
         case 'safety':
           if (this.stNode.unit && !this.stNode.unit?.tenant?.node) {
             this.stNode.unit.tenant = new Safety(
@@ -128,7 +139,8 @@ export class NodeDirective {
               this.stNode.unit.dom.classList.contains('shopping') ||
               this.stNode.unit.dom.classList.contains('school') ||
               this.stNode.unit.dom.classList.contains('safety') ||
-              this.stNode.unit.dom.classList.contains('attractions')
+              this.stNode.unit.dom.classList.contains('attractions') ||
+              this.stNode.unit.dom.classList.contains('fun')
             ) {
               const classList = this.stNode.unit.dom.classList.value
                 .replace('node unit ', '')

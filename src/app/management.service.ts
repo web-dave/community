@@ -9,6 +9,7 @@ import { Safety } from './Bloxx/safety';
 import { Attractions } from './Bloxx/attractions';
 import { Unit } from './Bloxx/unit';
 import { Elevator } from './Bloxx/elevator';
+import { Fun } from './Bloxx/fun';
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +21,7 @@ export class ManagementService {
   schools: School[] = [];
   safety: Safety[] = [];
   attractions: Attractions[] = [];
+  funs: Fun[] = [];
   units: Unit[] = [];
   elevator: Elevator[] = [];
 
@@ -123,6 +125,21 @@ export class ManagementService {
 
   addAttractions(t: Attractions) {
     this.attractions.push(t);
+    this.manage();
+  }
+
+  addFun(t: Fun) {
+    this.funs.push(t);
+    this.manage();
+  }
+
+  destroyFun(t: Fun) {
+    const index = this.funs.map((f) => f.id).indexOf(t.id);
+    this.funs.splice(index, 1);
+    t.destroy();
+    if (t.node.unit?.tenant) {
+      t.node.unit.tenant = undefined;
+    }
     this.manage();
   }
 

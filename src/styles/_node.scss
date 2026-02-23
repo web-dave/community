@@ -118,6 +118,16 @@
         }
       }
 
+      &.fun {
+        background-image: url("../assets/img/icon/unit.png"),
+          url("../assets/img/icon/attractions.png");
+        &.closed {
+          background-image: url("../assets/img/icon/closing.png"),
+            url("../assets/img/icon/attractions.png"),
+            url("../assets/img/icon/unit.png");
+        }
+      }
+
       &.office {
         background-image: url("../assets/img/icon/unit.png"),
           url("../assets/img/icon/office.png");

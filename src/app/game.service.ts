@@ -14,6 +14,7 @@ import { Safety } from './Bloxx/safety';
 import { School } from './Bloxx/school';
 import { Shopping } from './Bloxx/shopping';
 import { Elevator } from './Bloxx/elevator';
+import { Fun } from './Bloxx/fun';
 import { BankService } from './bank.service';
 import { ISaveData, SaveService } from './save.service';
 
@@ -36,6 +37,7 @@ export class GameService {
         | Elevator
         | Office
         | Attractions
+        | Fun
         | Flat
         | Safety
         | School
@@ -152,6 +154,7 @@ export class GameService {
       | School
       | Safety
       | Attractions
+      | Fun
       | Unit
       | Elevator
   ) {
@@ -180,6 +183,9 @@ export class GameService {
       case 'elevator':
         this.manage.addElevator(instance as Elevator);
         break;
+      case 'fun':
+        this.manage.addFun(instance as Fun);
+        break;
     }
     this.persistData();
   }
@@ -193,6 +199,7 @@ export class GameService {
       | School
       | Safety
       | Attractions
+      | Fun
       | Unit
       | Elevator
   ) {
@@ -204,6 +211,10 @@ export class GameService {
         break;
       case 'office':
         this.manage.destroyOffice(instance as Office);
+        changed = true;
+        break;
+      case 'fun':
+        this.manage.destroyFun(instance as Fun);
         changed = true;
         break;
       case 'safety':
@@ -274,6 +285,7 @@ export class GameService {
     | School
     | Safety
     | Attractions
+    | Fun
     | undefined {
     switch (type) {
       case 'elevator':
@@ -290,6 +302,8 @@ export class GameService {
         return new Safety(nodeData, domEl, this, this.bank);
       case 'attractions':
         return new Attractions(nodeData, domEl, this, this.bank);
+      case 'fun':
+        return new Fun(nodeData, domEl, this, this.bank);
       default:
         return undefined;
     }
