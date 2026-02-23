@@ -139,6 +139,16 @@ export class ManagementService {
     this.manage();
   }
 
+  destroyAttractions(t: Attractions) {
+    const index = this.attractions.map((a) => a.id).indexOf(t.id);
+    this.attractions.splice(index, 1);
+    t.destroy();
+    if (t.node.unit?.tenant) {
+      t.node.unit.tenant = undefined;
+    }
+    this.manage();
+  }
+
   addUnit(t: Unit) {
     this.units.push(t);
     this.manage();
