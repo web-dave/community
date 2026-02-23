@@ -33,14 +33,27 @@ export class ManagementService {
 
   findJob() {
     this.flats
-      .filter((flat) => flat.adults > flat.jobs)
+      .filter(
+        (flat) =>
+          flat.offices.length + flat.shoppings.length < flat.adults
+      )
       .forEach((flat) => {
-        // const freeJob = this.offices.find((office) => office.jobFree >= 1);
-        const freeJobs = this.offices.filter((office) => office.jobFree >= 1);
-        if (freeJobs.length >= 1) {
-          const freeJob = freeJobs[Math.floor(Math.random() * freeJobs.length)];
-          freeJob.getEmployee(flat);
-          flat.getAJob(freeJob);
+        const freeOffices = this.offices.filter((office) => office.jobFree >= 1);
+        const freeShopping = this.shopping.filter((shop) => shop.jobFree >= 1);
+        const allFreeJobs: (Office | Shopping)[] = [
+          ...freeOffices,
+          ...freeShopping,
+        ];
+        if (allFreeJobs.length >= 1) {
+          const freeJob =
+            allFreeJobs[Math.floor(Math.random() * allFreeJobs.length)];
+          if (freeJob.type === 'office') {
+            (freeJob as Office).getEmployee(flat);
+            flat.getAJob(freeJob as Office);
+          } else {
+            (freeJob as Shopping).getEmployee(flat);
+            flat.getAShoppingJob(freeJob as Shopping);
+          }
         }
       });
   }
@@ -123,6 +136,16 @@ export class ManagementService {
 
   addAttractions(t: Attractions) {
     this.attractions.push(t);
+    this.manage();
+  }
+
+  destroyAttractions(t: Attractions) {
+    const index = this.attractions.map((a) => a.id).indexOf(t.id);
+    this.attractions.splice(index, 1);
+    t.destroy();
+    if (t.node.unit?.tenant) {
+      t.node.unit.tenant = undefined;
+    }
     this.manage();
   }
 

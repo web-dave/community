@@ -218,6 +218,10 @@ export class GameService {
         this.manage.destroyOffice(instance as Office);
         changed = true;
         break;
+      case 'attractions':
+        this.manage.destroyAttractions(instance as Attractions);
+        changed = true;
+        break;
       case 'safety':
         break;
       case 'school':

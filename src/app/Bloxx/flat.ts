@@ -9,6 +9,7 @@ import { Subject } from 'rxjs';
 import { Office } from './office';
 import { School } from './school';
 import { Safety } from './safety';
+import { Shopping } from './shopping';
 
 export class Flat {
   public readonly type = 'flat';
@@ -26,7 +27,10 @@ export class Flat {
   safeties: Safety[] = [];
   attractions = 0;
   noSchoolCounter = 0;
+  crimeCounter = 0;
   offices: Office[] = [];
+  shoppings: Shopping[] = [];
+  private unemployedCounter = 0;
 
   constructor(
     public node: INode,
@@ -47,8 +51,29 @@ export class Flat {
         this.dom.classList.remove('no-school');
         this.noSchoolCounter = 0;
       }
-      if (this.noSchoolCounter >= 6) {
+      if (this.noSchoolCounter >= 7) {
         this.engine.destroy(this.type, this);
+      }
+      if (this.safeties.length === 0) {
+        this.dom.classList.add('crime');
+        this.crimeCounter++;
+      } else {
+        this.dom.classList.remove('crime');
+        this.crimeCounter = 0;
+      }
+      if (this.crimeCounter >= 3) {
+        this.engine.destroy(this.type, this);
+      }
+      const isUnemployed =
+        this.offices.length + this.shoppings.length < this.adults;
+      if (isUnemployed && this.safeties.length === 0) {
+        this.unemployedCounter++;
+        if (this.unemployedCounter >= 7) {
+          this.dom.classList.add('crime');
+        }
+      } else {
+        this.unemployedCounter = 0;
+        this.dom.classList.remove('crime');
       }
     });
 
@@ -75,6 +100,8 @@ export class Flat {
   getASafety(safety: Safety) {
     this.safeties.push(safety);
     this.dom.classList.add('protected');
+    this.unemployedCounter = 0;
+    this.dom.classList.remove('crime');
   }
   leaveSafety(safety: Safety) {
     const index = this.safeties.map((s) => s.id).indexOf(safety.id);
@@ -83,6 +110,15 @@ export class Flat {
     }
     if (this.safeties.length === 0) {
       this.dom.classList.remove('protected');
+    }
+  }
+  getAShoppingJob(shopping: Shopping) {
+    this.shoppings.push(shopping);
+  }
+  leaveShoppingJob(shopping: Shopping) {
+    const index = this.shoppings.map((s) => s.id).indexOf(shopping.id);
+    if (index !== -1) {
+      this.shoppings.splice(index, 1);
     }
   }
 
@@ -98,13 +134,15 @@ export class Flat {
       'couple',
       'no-school',
       'on-fire',
+      'crime',
       'protected',
       'family',
       'kids-0',
       'kids-1',
       'kids-2',
       'kids-3',
-      'kids-4'
+      'kids-4',
+      'crime'
     );
     this.offices.forEach((office) => {
       office.leave(this);
@@ -118,5 +156,9 @@ export class Flat {
       safety.leave(this);
     });
     this.safeties = [];
+    this.shoppings.forEach((shopping) => {
+      shopping.leave(this);
+    });
+    this.shoppings = [];
   }
 }
