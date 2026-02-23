@@ -16,7 +16,8 @@ export type UnitType =
   | 'office'
   | 'school'
   | 'shopping'
-  | 'elevator';
+  | 'elevator'
+  | 'safety';
 export type condition = 'clean' | 'dirty';
 
 export const prizes: { [key: string]: number } = {
@@ -82,7 +83,7 @@ const floorCount = 16;
 function getIdListOfAccessibleUnits(
   state: State,
   floor: number,
-  node: number
+  node: number,
 ): string[] {
   const units = state.units
     .filter((u) => u.id.startsWith(`${floor}_`))
@@ -106,7 +107,7 @@ function searchChangeReachableUnits(
   floor: number,
   id: number,
   state: State,
-  direction: number
+  direction: number,
 ): string[] {
   const changeReachableUnits: string[] = [];
   if (accessibleIds.includes(`${floor}_${id + direction}`)) {
@@ -127,7 +128,7 @@ export const reducer = createReducer(
   on(timeAction, (state, action) => {
     const newBalance = state.flats.reduce(
       (balance, flat) => balance - 50,
-      state.accountValue
+      state.accountValue,
     );
     let offices = state.units.filter((u) => u.type == 'office');
     const officeAddJobs: { [id: string]: number } = {};
@@ -183,7 +184,7 @@ export const reducer = createReducer(
           .filter((u) => u.type == 'flat')
           .filter((u) => u.offices?.includes(unit.id))
           .map((u) =>
-            (u.offices as string[]).filter((o) => o == unit.id).map(() => u.id)
+            (u.offices as string[]).filter((o) => o == unit.id).map(() => u.id),
           )
           .flat();
         console.log('Flats ID:', employees);
@@ -194,7 +195,7 @@ export const reducer = createReducer(
           .filter((u) => u.type == 'flat')
           .filter((u) => u.schools?.includes(unit.id))
           .map((u) =>
-            (u.schools as string[]).filter((o) => o == unit.id).map(() => u.id)
+            (u.schools as string[]).filter((o) => o == unit.id).map(() => u.id),
           )
           .flat();
         const school = { ...unit, pupils };
@@ -236,10 +237,10 @@ export const reducer = createReducer(
           if (state.elevators.find((u) => u.startsWith(`${floor}_`))) {
             const accessibleIds = getIdListOfAccessibleUnits(state, floor, id);
             const elevatorIds = state.elevators.filter((u) =>
-              u.startsWith(`${floor}_`)
+              u.startsWith(`${floor}_`),
             );
             const elevatorReachable = elevatorIds.some((u) =>
-              accessibleIds.includes(u)
+              accessibleIds.includes(u),
             );
             if (elevatorReachable) {
               reachable = true;
@@ -248,7 +249,7 @@ export const reducer = createReducer(
                 floor,
                 id,
                 state,
-                -1
+                -1,
               );
               changeReachableUnits = [
                 ...changeReachableUnits,
@@ -257,7 +258,7 @@ export const reducer = createReducer(
                   floor,
                   id,
                   state,
-                  1
+                  1,
                 ),
               ];
             }
@@ -358,7 +359,7 @@ export const reducer = createReducer(
         } else {
           const accessibleIds = getIdListOfAccessibleUnits(state, floor, id);
           const elevatorIds = state.elevators.filter((u) =>
-            u.startsWith(`${floor}_`)
+            u.startsWith(`${floor}_`),
           );
           isConnectable = elevatorIds.some((u) => accessibleIds.includes(u));
         }
@@ -388,10 +389,12 @@ export const reducer = createReducer(
           newState.elevators = [...state.elevators, action.id];
         } else return state;
         break;
+      case 'safety':
+        break;
     }
 
     return newState;
-  })
+  }),
 );
 
 export const metaReducers: MetaReducer<State>[] = isDevMode() ? [] : [];
