@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IBloxx } from 'models/bloxx.interface';
 import { IFloor } from 'models/floor.interface';
+import { INode } from 'models/node.interface';
 import { interval, Subject } from 'rxjs';
 import { share, tap } from 'rxjs/operators';
 import { ManagementService } from './management.service';
@@ -13,6 +14,8 @@ import { Safety } from './Bloxx/safety';
 import { School } from './Bloxx/school';
 import { Shopping } from './Bloxx/shopping';
 import { Elevator } from './Bloxx/elevator';
+import { BankService } from './bank.service';
+import { ISaveData, SaveService } from './save.service';
 
 @Injectable({
   providedIn: 'root',
@@ -47,7 +50,11 @@ export class GameService {
     // tap((i) => console.log(i, this.manage))
   );
 
-  constructor(public manage: ManagementService) {
+  constructor(
+    public manage: ManagementService,
+    private bank: BankService,
+    private saveService: SaveService
+  ) {
     this.total_floors = [...Array(this.floors_count).keys()].map((i) => ({
       floor: i,
       elevator: false,
@@ -151,35 +158,35 @@ export class GameService {
     switch (block) {
       case 'unit':
         this.manage.addUnit(instance as Unit);
-        this.persistData(block, this.manage.units);
+        this.persistData();
         break;
       case 'attractions':
         this.manage.addAttractions(instance as Attractions);
-        this.persistData(block, this.manage.attractions);
+        this.persistData();
         break;
       case 'flat':
         this.manage.addFlat(instance as Flat);
-        this.persistData(block, this.manage.flats);
+        this.persistData();
         break;
       case 'office':
         this.manage.addOffice(instance as Office);
-        this.persistData(block, this.manage.offices);
+        this.persistData();
         break;
       case 'safety':
         this.manage.addSafety(instance as Safety);
-        this.persistData(block, this.manage.safety);
+        this.persistData();
         break;
       case 'school':
         this.manage.addSchool(instance as School);
-        this.persistData(block, this.manage.schools);
+        this.persistData();
         break;
       case 'shopping':
         this.manage.addShopping(instance as Shopping);
-        this.persistData(block, this.manage.shopping);
+        this.persistData();
         break;
       case 'elevator':
         this.manage.addElevator(instance as Elevator);
-        this.persistData(block, this.manage.elevator);
+        this.persistData();
         break;
     }
   }
@@ -199,11 +206,11 @@ export class GameService {
     switch (block) {
       case 'flat':
         this.manage.destroyFlat(instance as Flat);
-        this.persistData(block, this.manage.flats);
+        this.persistData();
         break;
       case 'office':
         this.manage.destroyOffice(instance as Office);
-        this.persistData(block, this.manage.offices);
+        this.persistData();
         break;
       case 'safety':
         break;
@@ -216,19 +223,79 @@ export class GameService {
     }
   }
 
-  persistData(
-    key: IBloxx,
-    data:
-      | Office[]
-      | Flat[]
-      | Shopping[]
-      | School[]
-      | Safety[]
-      | Attractions[]
-      | Unit[]
-      | Elevator[]
-  ) {
-    // localStorage.setItem(key, JSON.stringify(data));
+  persistData() {
+    // Defer serialization to the next macrotask so that all DOM references
+    // (e.g. stNode.unit and unit.tenant) are fully assigned before we read them.
+    setTimeout(() => {
+      const placements: ISaveData['placements'] = [];
+      this.total_floors.forEach((floor) => {
+        floor.nodes.forEach((node) => {
+          if (node.unit) {
+            placements.push({
+              floor: node.floor,
+              node: node.id,
+              tenant: node.unit.tenant?.type ?? null,
+            });
+          }
+        });
+      });
+      this.saveService.save({ balance: this.bank.getBalance(), placements });
+    }, 0);
+  }
+
+  restoreGame(saveData: ISaveData) {
+    // Temporarily set balance to max so affordability checks don't block restore.
+    // The saved balance is restored after all objects are created.
+    this.bank.setBalance(Number.MAX_SAFE_INTEGER);
+    saveData.placements.forEach((placement) => {
+      const nodeData = this.total_floors[placement.floor]?.nodes[placement.node];
+      const domEl = document.getElementById(
+        'node_' + placement.floor + '_' + placement.node
+      ) as HTMLDivElement;
+      if (!nodeData || !domEl) return;
+      nodeData.unit = new Unit(nodeData, domEl, this.bank, this);
+      if (placement.tenant) {
+        nodeData.unit.tenant = this.createTenant(
+          placement.tenant,
+          nodeData,
+          domEl
+        );
+      }
+    });
+    this.bank.setBalance(saveData.balance);
+  }
+
+  private createTenant(
+    type: string,
+    nodeData: INode,
+    domEl: HTMLDivElement
+  ):
+    | Elevator
+    | Flat
+    | Office
+    | Shopping
+    | School
+    | Safety
+    | Attractions
+    | undefined {
+    switch (type) {
+      case 'elevator':
+        return new Elevator(nodeData, domEl, this, this.bank);
+      case 'flat':
+        return new Flat(nodeData, domEl, this, this.bank);
+      case 'office':
+        return new Office(nodeData, domEl, this, this.bank);
+      case 'shopping':
+        return new Shopping(nodeData, domEl, this, this.bank);
+      case 'school':
+        return new School(nodeData, domEl, this, this.bank);
+      case 'safety':
+        return new Safety(nodeData, domEl, this, this.bank);
+      case 'attractions':
+        return new Attractions(nodeData, domEl, this, this.bank);
+      default:
+        return undefined;
+    }
   }
 
   showDialog(data: string[]) {

@@ -16,5 +16,6 @@ export class Elevator {
     this.dom.classList.add(this.type);
     this.engine.connectFloor(this.node.floor);
     this.bank.subtract(this.price);
+    this.engine.persistData();
   }
 }
