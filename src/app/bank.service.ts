@@ -44,4 +44,13 @@ export class BankService {
     this.balance += amount;
     this.bankAccount$$.next(this.balance);
   }
+
+  getBalance(): number {
+    return this.balance;
+  }
+
+  setBalance(amount: number) {
+    this.balance = amount;
+    this.bankAccount$$.next(this.balance);
+  }
 }
