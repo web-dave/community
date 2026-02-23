@@ -76,6 +76,12 @@
               url("../assets/img/icon/unit.png");
           }
         }
+
+        &.on-fire {
+          background-image: url("../assets/img/icon/fire.png"),
+            url("../assets/img/icon/unit.png"),
+            url("../assets/img/icon/flat.png");
+        }
       }
 
       &.shopping {

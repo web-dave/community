@@ -76,7 +76,8 @@ export class GameService {
       if (unprotected.length > 0) {
         const target =
           unprotected[Math.floor(Math.random() * unprotected.length)];
-        this.destroy('flat', target);
+        target.catchFire();
+        setTimeout(() => this.destroy('flat', target), 2000);
       }
     });
   }
