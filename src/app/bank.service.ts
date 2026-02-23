@@ -11,7 +11,6 @@ export const prizes: { [key: string]: number } = {
   school: 7500,
   safety: 7500,
   attractions: 500,
-  fun: 500,
 };
 
 @Injectable({

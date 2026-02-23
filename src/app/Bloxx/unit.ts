@@ -4,7 +4,6 @@ import { BankService, prizes } from '../bank.service';
 import { GameService } from '../game.service';
 import { Attractions } from './attractions';
 import { Flat } from './flat';
-import { Fun } from './fun';
 import { Office } from './office';
 import { Safety } from './safety';
 import { School } from './school';
@@ -21,7 +20,6 @@ export class Unit {
     | Elevator
     | Office
     | Attractions
-    | Fun
     | Flat
     | Safety
     | School
