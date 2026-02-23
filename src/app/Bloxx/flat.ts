@@ -26,6 +26,7 @@ export class Flat {
   safeties: Safety[] = [];
   attractions = 0;
   noSchoolCounter = 0;
+  crimeCounter = 0;
   offices: Office[] = [];
 
   constructor(
@@ -47,7 +48,17 @@ export class Flat {
         this.dom.classList.remove('no-school');
         this.noSchoolCounter = 0;
       }
-      if (this.noSchoolCounter >= 6) {
+      if (this.noSchoolCounter >= 7) {
+        this.engine.destroy(this.type, this);
+      }
+      if (this.safeties.length === 0) {
+        this.dom.classList.add('crime');
+        this.crimeCounter++;
+      } else {
+        this.dom.classList.remove('crime');
+        this.crimeCounter = 0;
+      }
+      if (this.crimeCounter >= 3) {
         this.engine.destroy(this.type, this);
       }
     });
@@ -93,6 +104,7 @@ export class Flat {
       'flat',
       'couple',
       'no-school',
+      'crime',
       'protected',
       'family',
       'kids-0',
