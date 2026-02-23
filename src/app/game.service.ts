@@ -158,37 +158,30 @@ export class GameService {
     switch (block) {
       case 'unit':
         this.manage.addUnit(instance as Unit);
-        this.persistData();
         break;
       case 'attractions':
         this.manage.addAttractions(instance as Attractions);
-        this.persistData();
         break;
       case 'flat':
         this.manage.addFlat(instance as Flat);
-        this.persistData();
         break;
       case 'office':
         this.manage.addOffice(instance as Office);
-        this.persistData();
         break;
       case 'safety':
         this.manage.addSafety(instance as Safety);
-        this.persistData();
         break;
       case 'school':
         this.manage.addSchool(instance as School);
-        this.persistData();
         break;
       case 'shopping':
         this.manage.addShopping(instance as Shopping);
-        this.persistData();
         break;
       case 'elevator':
         this.manage.addElevator(instance as Elevator);
-        this.persistData();
         break;
     }
+    this.persistData();
   }
 
   destroy(
@@ -203,14 +196,15 @@ export class GameService {
       | Unit
       | Elevator
   ) {
+    let changed = false;
     switch (block) {
       case 'flat':
         this.manage.destroyFlat(instance as Flat);
-        this.persistData();
+        changed = true;
         break;
       case 'office':
         this.manage.destroyOffice(instance as Office);
-        this.persistData();
+        changed = true;
         break;
       case 'safety':
         break;
@@ -220,6 +214,9 @@ export class GameService {
         break;
       case 'elevator':
         break;
+    }
+    if (changed) {
+      this.persistData();
     }
   }
 
