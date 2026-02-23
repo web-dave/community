@@ -58,9 +58,9 @@ export class Office {
     this.checkEmployeeStaus();
     if (this.vacant >= 3) {
       this.dom.classList.add('dirty');
-      if (this.vacant >= 9) {
+      if (this.vacant >= 5) {
         this.dom.classList.add('dangerous');
-        if (this.vacant >= 12) {
+        if (this.vacant >= 7) {
           this.engine.destroy(this.type, this);
         }
       }
