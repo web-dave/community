@@ -76,6 +76,12 @@
               url("../assets/img/icon/unit.png");
           }
         }
+
+        &.crime {
+          background-image: url("../assets/img/icon/crime.png"),
+            url("../assets/img/icon/unit.png"),
+            url("../assets/img/icon/flat.png");
+        }
       }
 
       &.shopping {
@@ -85,6 +91,11 @@
           background-image: url("../assets/img/icon/unit.png"),
             url("../assets/img/icon/shopping.png"),
             url("../assets/img/icon/dirt.png");
+        }
+        &.crime {
+          background-image: url("../assets/img/icon/crime.png"),
+            url("../assets/img/icon/unit.png"),
+            url("../assets/img/icon/shopping.png");
         }
       }
 
