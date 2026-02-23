@@ -130,6 +130,8 @@ export const reducer = createReducer(
       state.accountValue
     );
     let offices = state.units.filter((u) => u.type == 'office');
+    const officeAddJobs: { [id: string]: number } = {};
+    const schoolAddPupils: { [id: string]: number } = {};
     const flatUnits = state.units.map((u) => {
       if (u.type == 'flat') {
         const flat = { ...u };
@@ -141,9 +143,10 @@ export const reducer = createReducer(
         for (let i = 0; i < jobStop; i++) {
           const office = state.units
             .filter((u) => u.type == 'office')
-            .find((o) => (o.jobs as number) > (o.employees?.length as number));
+            .find((o) => (o.jobs as number) > (o.employees?.length as number) + (officeAddJobs[o.id] ?? 0));
           if (!!office) {
             flat.offices = [...(flat.offices as string[]), office.id as string];
+            officeAddJobs[office.id] = (officeAddJobs[office.id] ?? 0) + 1;
           }
         }
 
@@ -154,9 +157,10 @@ export const reducer = createReducer(
         for (let i = 0; i < schoolStop; i++) {
           const school = state.units
             .filter((u) => u.type == 'school')
-            .find((o) => (o.seats as number) > (o.pupils?.length as number));
+            .find((o) => (o.seats as number) > (o.pupils?.length as number) + (schoolAddPupils[o.id] ?? 0));
           if (!!school) {
             flat.schools = [...(flat.schools as string[]), school.id as string];
+            schoolAddPupils[school.id] = (schoolAddPupils[school.id] ?? 0) + 1;
           }
         }
 
@@ -174,7 +178,7 @@ export const reducer = createReducer(
       }
     });
     const units = flatUnits.map((unit) => {
-      if (unit.type == 'office') {
+      if (unit.type == 'office' && officeAddJobs[unit.id]) {
         const employees = flatUnits
           .filter((u) => u.type == 'flat')
           .filter((u) => u.offices?.includes(unit.id))
@@ -185,7 +189,7 @@ export const reducer = createReducer(
         console.log('Flats ID:', employees);
         const office = { ...unit, employees };
         return office;
-      } else if (unit.type == 'school') {
+      } else if (unit.type == 'school' && schoolAddPupils[unit.id]) {
         const pupils = flatUnits
           .filter((u) => u.type == 'flat')
           .filter((u) => u.schools?.includes(unit.id))
